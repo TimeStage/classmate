@@ -1,18 +1,29 @@
-import { prisma } from "@/lib/prisma";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { Account, Profile } from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 import GoogleProvider from "next-auth/providers/google";
+import { getUserByAccount } from "./user-utils";
 
-export const authOptions: AuthOptions = {
-  // Configure one or more authentication providers
-  adapter: PrismaAdapter(prisma),
+const prisma = new PrismaClient();
+
+const options = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_SECRET_ID!,
     }),
-    // ...add more providers here
   ],
+  adapter: PrismaAdapter(prisma, {
+    getUserByAccount,
+  }),
+  callbacks: {
+    async signIn({ account, profile }: { account: Account; profile: Profile }) {
+      if (account.provider === "google") {
+        return profile.email && profile.email.endsWith("@example.com");
+      }
+      return false; 
+    },
+  },
 };
 
-export default NextAuth(authOptions);
+export default NextAuth(options);
