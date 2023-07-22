@@ -1,29 +1,36 @@
-import NextAuth, { Account, Profile } from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import NextAuth, {  NextAuthOptions} from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { getUserByAccount } from "./user-utils";
+import { prisma } from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
-const prisma = new PrismaClient();
 
-const options = {
+const options : NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_SECRET_ID!,
+      
     }),
   ],
-  adapter: PrismaAdapter(prisma, {
-    getUserByAccount,
-  }),
   callbacks: {
-    async signIn({ account, profile }: { account: Account; profile: Profile }) {
-      if (account.provider === "google") {
-        return profile.email && profile.email.endsWith("@example.com");
+    async signIn({account,user,profile}) {
+      if (account?.provider === "google") {
+        return true
       }
-      return false; 
+      return false // Do different verification for other providers that don't have `email_verified`
     },
+    session({session,user}){
+      return {
+        ...session,
+        user
+      }
+    }
+    
   },
+  
 };
+
+
 
 export default NextAuth(options);
