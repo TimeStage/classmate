@@ -1,17 +1,16 @@
-import Image from "next/image";
-import { Inter, Roboto } from "next/font/google";
-import background from "@/assets/background-home.png";
-import { GoogleLogo } from "phosphor-react";
-import { signIn,  useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-const inter = Inter({ subsets: ["latin"] });
-const roboto = Roboto({
-  weight: ["100", "300", "500", "700", "900"],
-  subsets: ["latin"],
-});
+import Image from 'next/image'
+import { Inter } from 'next/font/google'
+import background from '@/assets/background-home.png'
+import { GoogleLogo } from 'phosphor-react'
+import { signIn, useSession } from 'next-auth/react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { roboto } from '@/lib/fonts/roboto'
+import { Button } from '@/components/Button'
+const inter = Inter({ subsets: ['latin'] })
+
 export default function Home() {
-  const {data: session} = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
 
   useEffect(() => {
@@ -29,10 +28,8 @@ export default function Home() {
       //     console.error("Erro ao criar usuário:", error);
       //   });
     }
-  }, [session]);
-  
+  }, [session])
 
-  
   return (
     <div>
       <Image
@@ -48,14 +45,15 @@ export default function Home() {
         <div className="bg-zinc-900 flex flex-col justify-center items-center p-6 rounded-lg gap-8">
           <h1 className="text-gray-100 font-bold text-5xl ">CEDUP CLASS</h1>
           <div className="flex flex-col justify-center items-center gap-2 w-full">
-              
-                <button 
-                  onClick={() => signIn("google")} 
-                  className="bg-red-500 p-3 flex gap-2 text-white  justify-center items-center rounded-md font-medium text-sm w-full transition-all hover:opacity-70">
-                  <GoogleLogo size={16} />
-                  Entrar com Google
-               </button>
-           
+            <Button
+              className="bg-red-500"
+              onClick={() => {
+                signIn('google')
+              }}
+            >
+              <GoogleLogo size={16} />
+              Entrar com Google
+            </Button>
             <h2 className="text-stone-400 font-normal text-xs">
               Veja os horários de suas aulas atualizado!
             </h2>
@@ -63,5 +61,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  );
+  )
 }
