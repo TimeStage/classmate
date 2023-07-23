@@ -17,7 +17,7 @@ interface FormStepProps {
 export default function FormStep({ courses }: FormStepProps) {
   const [selectedCourseId, setSelectedCourseId] = useState('')
 
-  const { data: teams, isFetching } = useQuery(
+  const { data: teams, isLoading } = useQuery(
     ['teams', selectedCourseId],
     async () => {
       const { data: selectedTeams } = await api.get<GetTeamResponse[]>(
@@ -27,6 +27,9 @@ export default function FormStep({ courses }: FormStepProps) {
     },
     {
       enabled: !!selectedCourseId,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 
@@ -56,7 +59,7 @@ export default function FormStep({ courses }: FormStepProps) {
           />
           <Select
             disabled={
-              !teams || !selectedCourseId || isFetching || teams.length === 0
+              !teams || !selectedCourseId || isLoading || teams.length === 0
             }
             placeholder="Selecione uma turma"
             values={
