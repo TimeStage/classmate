@@ -2,7 +2,7 @@ import { Button } from '@/components/Button'
 import { Select } from '@/components/Select'
 import { api } from '@/lib/axios'
 import { roboto } from '@/lib/fonts/roboto'
-import { prisma } from '@/lib/prisma'
+import { GetCourseResponse } from '@/models/course'
 import { GetTeamResponse } from '@/models/team'
 import { Course } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
@@ -84,7 +84,7 @@ export default function FormStep({ courses }: FormStepProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const courses = await prisma.course.findMany()
+  const { data: courses } = await api.get<GetCourseResponse>('/course/getAll')
 
   return {
     props: { courses },
