@@ -18,7 +18,7 @@ const options : NextAuthOptions = {
       if (account?.provider === "google") {
         return true
       }
-      return false // Do different verification for other providers that don't have `email_verified`
+      return false 
     },
     session({session,user}){
       return {
