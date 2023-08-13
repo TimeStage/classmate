@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { isAuthenticated } from '@/middlewares/verify-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function GetByCourse(
@@ -7,8 +8,10 @@ export default async function GetByCourse(
 ) {
   try {
     if (req.method !== 'GET') {
-      return res.status(405)
+      return res.status(405).end()
     }
+
+    await isAuthenticated(req, res)
 
     const { id } = req.query
 

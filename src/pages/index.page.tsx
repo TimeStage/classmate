@@ -1,35 +1,15 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import background from '@/assets/background-home.png'
 import { GoogleLogo } from 'phosphor-react'
-import { signIn, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 import { roboto } from '@/lib/fonts/roboto'
 import { Button } from '@/components/Button'
-const inter = Inter({ subsets: ['latin'] })
+import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
+import { prisma } from '@/lib/prisma'
+import { buildNextAuthOptions } from './api/auth/[...nextauth].api'
 
 export default function Home() {
-  const { data: session } = useSession()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (session?.user) {
-      router.push('/register/form-step')
-      // axios
-      //   .post("/api/createUser", {
-      //     name: session.user.name,
-      //     email: session.user.email,
-      //   })
-      //   .then((response) => {
-      //     console.log("Usuário criado com sucesso:", response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Erro ao criar usuário:", error);
-      //   });
-    }
-  }, [session])
-
   return (
     <div>
       <Image
@@ -62,4 +42,37 @@ export default function Home() {
       </main>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
+
+  if (!session?.user || !session.user.email) {
+    return {
+      props: {},
+    }
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session.user.email,
+    },
+  })
+
+  if (!user) {
+    return {
+      props: {},
+    }
+  }
+
+  return {
+    props: {},
+    redirect: {
+      destination: user.teamId ? '/home' : '/register/form-step',
+    },
+  }
 }
