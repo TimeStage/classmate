@@ -25,10 +25,41 @@ model Team {
   courseId String
 
   User    User[]
-  courses Course @relation(fields: [courseId], references: [id])
+  courses Course    @relation(fields: [courseId], references: [id])
+  WeekDay WeekDay[]
 
   @@unique([teamName, courseId])
   @@map("teams")
+}
+
+model WeekDay {
+  id      String @id @default(uuid())
+  weekDay Int
+  teamId  String
+
+  Team  Team    @relation(fields: [teamId], references: [id])
+  Class Class[]
+
+  @@unique([weekDay, teamId])
+  @@map("week_days")
+}
+
+model Class {
+  id        String   @id @default(uuid())
+  hour      DateTime
+  name      String
+  weekDayId String
+  WeekDay   WeekDay  @relation(fields: [weekDayId], references: [id])
+  season    Season
+
+  @@unique([hour, weekDayId])
+  @@map("classes")
+}
+
+enum Season {
+  MORNING
+  AFTERNOON
+  NOCTURNAL
 }
 
 model User {
