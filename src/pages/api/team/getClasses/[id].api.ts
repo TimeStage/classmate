@@ -21,25 +21,23 @@ export default async function GetByCourse(
       })
     }
 
-    const course = await prisma.course.findUnique({
+    const classes = await prisma.weekDay.findMany({
       where: {
-        id,
+        teamId: id,
+      },
+      orderBy: {
+        weekDay: 'asc',
+      },
+      include: {
+        Class: {
+          orderBy: {
+            hour: 'asc',
+          },
+        },
       },
     })
 
-    if (!course) {
-      return res.status(404).json({
-        error: 'Course not found',
-      })
-    }
-
-    const teams = await prisma.team.findMany({
-      where: {
-        courseId: course.id,
-      },
-    })
-
-    return res.status(200).json(teams)
+    return res.status(200).json(classes)
   } catch (error) {
     return res.status(500)
   }

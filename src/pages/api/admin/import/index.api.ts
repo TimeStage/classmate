@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { isAuthenticated } from '@/middlewares/verify-auth-admin'
 import { importExcelRequestSchema } from '@/validators/admin'
-import Excel, { RowModel } from 'exceljs'
+import { RowModel } from 'exceljs'
 import {
   Class,
   FormattedCourses,
@@ -11,6 +11,14 @@ import {
   WeekDay,
 } from './models/classes'
 import { upsertData } from './functions/upsert-data'
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '4mb', // Set desired value here
+    },
+  },
+}
 
 export default async function ImportExcel(
   req: NextApiRequest,
@@ -23,11 +31,9 @@ export default async function ImportExcel(
 
     await isAuthenticated(req, res)
 
-    const { file } = importExcelRequestSchema.parse(req.body)
+    const { rows: rowsFromBody } = importExcelRequestSchema.parse(req.body)
 
-    const worksheet: Excel.WorksheetModel = file
-
-    const rows: RowModel[] = worksheet.rows
+    const rows: RowModel[] = rowsFromBody
 
     const teams: Team[] = []
 
@@ -96,7 +102,7 @@ export default async function ImportExcel(
           row.cells.forEach((cell) => {
             if (
               String(cell.address).replace(/[0-9]/g, '') === team.column &&
-              row.cells[0].master === weekDay.master
+              (row.cells[0].master === weekDay.master || !!row.cells[0].value)
             ) {
               weekDayClasses.push({
                 hour: new Date(String(row.cells[1].value)),
