@@ -11,6 +11,7 @@ import {
   WeekDay,
 } from './models/classes'
 import { upsertData } from './functions/upsert-data'
+import dayjs from 'dayjs'
 
 export const config = {
   api: {
@@ -105,7 +106,13 @@ export default async function ImportExcel(
               (row.cells[0].master === weekDay.master || !!row.cells[0].value)
             ) {
               weekDayClasses.push({
-                hour: new Date(String(row.cells[1].value)),
+                hour: dayjs(String(row.cells[1].value))
+                  .add(
+                    dayjs(String(row.cells[1].value)).utcOffset() * -1,
+                    'minutes',
+                  )
+                  .utc()
+                  .toDate(),
                 value: String(cell.value),
               })
             }

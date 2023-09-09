@@ -18,10 +18,7 @@ export function TeamClasses({ classes }: TeamClassesProps) {
             key={teamClass.id}
           >
             <span>
-              {dayjs(teamClass.hour)
-                .add(3, 'hour')
-                .add(7, 'minutes')
-                .format('HH:mm')}
+              {dayjs(teamClass.hour).add(7, 'minutes').format('HH:mm')}
             </span>
             <h1> {teamClass.class} </h1>
           </div>

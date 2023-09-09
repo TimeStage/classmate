@@ -40,7 +40,6 @@ export async function getTeamClasses({ teamId }: TeamClassesProps) {
     const { data } = await api.get<GetClassesResponse>(
       `/team/getClasses/${teamId}`,
     )
-    console.log(data)
 
     return data
   } catch (error) {

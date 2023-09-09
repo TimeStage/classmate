@@ -11,8 +11,6 @@ export default function AdminPage() {
     return teams
   })
 
-  // console.log(teams)
-
   return (
     <main className="bg-zinc-900 min-h-screen font-roboto py-10">
       <div className="flex flex-col justify-center items-center gap-2">

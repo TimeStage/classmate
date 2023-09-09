@@ -112,8 +112,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   })
 
-  console.log(weekDays)
-
   const classes = weekDays.map(({ Class, ...weekDay }) => {
     const classes = Class.map(({ hour, ...dayClass }) => {
       return {
@@ -127,8 +125,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       classes,
     }
   })
-
-  console.log(classes)
 
   return {
     props: {

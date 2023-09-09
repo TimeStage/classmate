@@ -56,9 +56,7 @@ export async function upsertData(courses: FormattedCourses[]) {
         })
 
         for (const teamClass of weekDay.classes) {
-          const currentClassHour = dayjs(teamClass.hour)
-            .set('hour', dayjs(teamClass.hour).hour() + 3)
-            .hour()
+          const currentClassHour = dayjs(teamClass.hour).hour()
 
           const season =
             currentClassHour < 12
