@@ -5,9 +5,14 @@ import {
 } from '@/models/team'
 import { api } from '..'
 
-export async function teamsGetAll() {
+export async function teamsGetAll(filter?: string) {
   try {
-    const { data } = await api.get<GetAllTeamsResponse[]>('/team/getAll')
+    const team = filter
+    const { data } = await api.get<GetAllTeamsResponse[]>('/team/getAll', {
+      params: {
+        team,
+      },
+    })
     return data
   } catch (error) {
     console.error(error)

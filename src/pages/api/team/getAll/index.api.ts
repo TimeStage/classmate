@@ -13,7 +13,20 @@ export default async function GetAll(
 
     await isAuthenticated(req, res)
 
+    const { team } = req.query
+
+    if (!!team && typeof team !== 'string') {
+      return res.status(400).json({
+        error: 'Invalid team name',
+      })
+    }
+
     const teams = await prisma.team.findMany({
+      where: {
+        teamName: {
+          startsWith: team,
+        },
+      },
       include: {
         courses: {
           select: {

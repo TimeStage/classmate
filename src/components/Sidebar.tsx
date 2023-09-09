@@ -1,55 +1,61 @@
-import React, { ReactNode } from 'react'
-import { XCircle, SignOut, House, UsersFour, Gear } from 'phosphor-react'
+import React, { useEffect, useState } from 'react'
+import { SignOut, House, UsersFour, Gear, List } from 'phosphor-react'
+import Link from 'next/link'
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
-interface SidebarProps {
-  isOpen: boolean
-  children: ReactNode
-  toggleSidebar: () => void
-}
+export function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false)
 
-export function Sidebar({ isOpen, toggleSidebar, children }: SidebarProps) {
-  const sidebarItems = [
-    {
-      icon: <House size={24} />,
-      content: 'Sua turma',
-    },
-    {
-      icon: <UsersFour size={24} />,
-      content: 'Pesquisar por turma',
-    },
-    {
-      icon: <SignOut size={24} />,
-      content: 'Sair',
-    },
-    {
-      icon: <Gear size={24} />,
-      content: 'Configurações',
-    },
-  ]
+  const { pathname, push } = useRouter()
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  const buttonClassName =
+    'flex gap-2 items-center text-gray-100 font-bold text-xl cursor-pointer hover:opacity-70 transition-all'
 
   return (
-    <aside
-      className={`fixed top-0 left-0 h-full bg-gray-800 w-64 transition-transform ease-in-out duration-300 transform ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
-    >
-      <div className="p-4">
-        <button className="text-white" onClick={toggleSidebar}>
-          <XCircle size={24} />
-        </button>
-      </div>
-      <nav className="flex flex-col gap-4 items-start justify-center">
-        {sidebarItems.map((item, index) => (
-          <div
-            key={index}
-            className="flex text-white ml-10 mb-4 cursor-pointer"
+    <>
+      <button
+        className={`fixed top-5 left-5 text-white z-20 ${
+          pathname === '/' && 'hidden'
+        }`}
+        onClick={() => setIsOpen((state) => !state)}
+      >
+        <List size={40} />
+      </button>
+      <aside
+        className={`fixed top-0 left-0 h-screen bg-gray-800 w-full transition-transform ease-in-out duration-300 transform z-10 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <nav className="flex flex-col mt-32 gap-10 ps-14 items-start justify-center">
+          <Link href={`/home`} className={buttonClassName}>
+            <House size={24} />
+            <span>Sua turma</span>
+          </Link>
+          <Link href={`/team`} className={buttonClassName}>
+            <UsersFour size={24} />
+            <span>Pesquisar por turma</span>
+          </Link>
+          <button
+            onClick={async () => {
+              await signOut()
+              await push('/')
+            }}
+            className={buttonClassName}
           >
-            {item.icon}
-            <span className="ml-2">{item.content}</span>
-          </div>
-        ))}
-      </nav>
-      {children}
-    </aside>
+            <SignOut size={24} />
+            <span>Sair</span>
+          </button>
+          <Link href={`/config`} className={buttonClassName}>
+            <Gear size={24} />
+            <span>Configurações</span>
+          </Link>
+        </nav>
+      </aside>
+    </>
   )
 }

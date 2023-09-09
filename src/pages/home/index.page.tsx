@@ -18,7 +18,7 @@ interface HomeProps {
 export default function Home({ user, classes }: HomeProps) {
   return (
     <div
-      className={`bg-zinc-900 w-full min-h-screen h-full flex flex-col justify-start py-24 items-center gap-8 px-8 font-roboto`}
+      className={`w-full h-full flex flex-col justify-start py-24 items-center gap-8 px-8 `}
     >
       <div className="flex flex-col max-w-xl w-full gap-6 text-gray-100">
         <h1 className="font-bold text-2xl">Olá {user.name}</h1>

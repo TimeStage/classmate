@@ -77,7 +77,7 @@ export default function FormStep({ courses, user }: FormStepProps) {
 
   return (
     <div
-      className={`bg-zinc-900 w-screen h-screen flex flex-col justify-center items-center gap-16 px-8 font-roboto `}
+      className={` flex flex-col justify-center items-center gap-16 px-8 w-full h-full `}
     >
       <header className="flex flex-col max-w-xl w-full gap-6 text-gray-100 ">
         <h1 className="font-bold text-2xl">Você está quase lá!</h1>
