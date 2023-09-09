@@ -2,13 +2,17 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../ERD.svg"
 }
 
 model Course {
@@ -25,10 +29,41 @@ model Team {
   courseId String
 
   User    User[]
-  courses Course @relation(fields: [courseId], references: [id])
+  courses Course    @relation(fields: [courseId], references: [id])
+  WeekDay WeekDay[]
 
   @@unique([teamName, courseId])
   @@map("teams")
+}
+
+model WeekDay {
+  id      String @id @default(uuid())
+  weekDay Int
+  teamId  String
+
+  Team  Team    @relation(fields: [teamId], references: [id])
+  Class Class[]
+
+  @@unique([weekDay, teamId])
+  @@map("week_days")
+}
+
+model Class {
+  id        String   @id @default(uuid())
+  hour      DateTime
+  name      String
+  weekDayId String
+  WeekDay   WeekDay  @relation(fields: [weekDayId], references: [id])
+  season    Season
+
+  @@unique([hour, weekDayId])
+  @@map("classes")
+}
+
+enum Season {
+  MORNING
+  AFTERNOON
+  NOCTURNAL
 }
 
 model User {
@@ -42,6 +77,8 @@ model User {
   accounts Account[]
   sessions Session[]
   teams    Team?     @relation(fields: [teamId], references: [id])
+
+  @@map("users")
 }
 
 model VerificationToken {
@@ -50,6 +87,7 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model Account {
@@ -69,6 +107,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
@@ -77,4 +116,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }

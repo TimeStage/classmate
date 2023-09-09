@@ -1,7 +1,6 @@
 import { Button } from '@/components/Button'
 import { Select } from '@/components/Select'
-import { api } from '@/lib/axios'
-import { roboto } from '@/lib/fonts/roboto'
+
 import { prisma } from '@/lib/prisma'
 import { GetTeamResponse } from '@/models/team'
 import { Course } from '@prisma/client'
@@ -15,6 +14,8 @@ import { z } from 'zod'
 import { useRouter } from 'next/router'
 import { User, getServerSession } from 'next-auth'
 import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api'
+import { userPutTeamId } from '@/services/api/requests/put'
+import { teamsGetByCourse } from '@/services/api/requests/get'
 interface FormStepProps {
   courses: Course[]
   user: User
@@ -40,9 +41,9 @@ export default function FormStep({ courses, user }: FormStepProps) {
   const { data: teams, isLoading } = useQuery(
     ['teams', selectedCourseId],
     async () => {
-      const { data: selectedTeams } = await api.get<GetTeamResponse[]>(
-        `/team/getByCourse/${selectedCourseId}`,
-      )
+      const selectedTeams = teamsGetByCourse({
+        courseId: selectedCourseId,
+      })
       return selectedTeams
     },
     {
@@ -67,16 +68,16 @@ export default function FormStep({ courses, user }: FormStepProps) {
   async function onSubmit(data: FormData) {
     const { userEmail, teamId } = data
 
-    await api.put('/auth/user/updateTeamId', {
-      userEmail,
+    await userPutTeamId({
       teamId,
+      userEmail,
     })
     router.push('/home')
   }
 
   return (
     <div
-      className={`bg-zinc-900 w-screen h-screen flex flex-col justify-center items-center gap-16 px-8 ${roboto.className} `}
+      className={`bg-zinc-900 w-screen h-screen flex flex-col justify-center items-center gap-16 px-8 font-roboto `}
     >
       <header className="flex flex-col max-w-xl w-full gap-6 text-gray-100 ">
         <h1 className="font-bold text-2xl">Você está quase lá!</h1>
