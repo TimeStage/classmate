@@ -17,7 +17,7 @@ export default async function GetByCourse(
 
     if (!id || typeof id !== 'string') {
       return res.status(400).json({
-        error: 'Course ID not provided',
+        error: 'Team ID not provided',
       })
     }
 

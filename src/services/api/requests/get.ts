@@ -1,4 +1,8 @@
-import { GetAllTeamsResponse, GetTeamResponse } from '@/models/team'
+import {
+  GetAllTeamsResponse,
+  GetClassesResponse,
+  GetTeamResponse,
+} from '@/models/team'
 import { api } from '..'
 
 export async function teamsGetAll() {
@@ -24,5 +28,23 @@ export async function teamsGetByCourse({ courseId }: TeamsGetByCourseProps) {
   } catch (error) {
     console.error(error)
     throw new Error('Error on getting team by course')
+  }
+}
+
+interface TeamClassesProps {
+  teamId: string
+}
+
+export async function getTeamClasses({ teamId }: TeamClassesProps) {
+  try {
+    const { data } = await api.get<GetClassesResponse>(
+      `/team/getClasses/${teamId}`,
+    )
+    console.log(data)
+
+    return data
+  } catch (error) {
+    console.error(error)
+    throw new Error('Error on getting team classes')
   }
 }
