@@ -12,7 +12,7 @@ export default function AdminPage() {
   })
 
   return (
-    <main className="bg-zinc-900 min-h-screen font-roboto py-10">
+    <main className="py-10">
       <div className="flex flex-col justify-center items-center gap-2">
         <h1 className=" text-gray-100 font-bold text-lg">
           Importe sua planilha de aulas!
