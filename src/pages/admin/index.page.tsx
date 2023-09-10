@@ -13,19 +13,12 @@ export default function AdminPage() {
 
   return (
     <main className="py-10">
-      <div className="flex flex-col justify-center items-center gap-2">
-        <h1 className=" text-gray-100 font-bold text-lg">
-          Importe sua planilha de aulas!
-        </h1>
-        <ImportExcel />
-      </div>
-
       <div className="flex flex-col gap-10">
         <h2 className="text-gray-100 font-bold text-3xl">
           Menu de acesso rápido
         </h2>
         <div className="grid grid-cols-4 gap-5">
-          <FastAccessCard />
+          <FastAccessCard>Importar cronôgrama</FastAccessCard>
           {/* {teams?.map((team) => (
             <TeamCard
               key={team.id}

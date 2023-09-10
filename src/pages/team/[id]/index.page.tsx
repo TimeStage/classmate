@@ -1,10 +1,13 @@
+import { Accordion } from '@/components/Accordion'
+import { Button } from '@/components/Button'
+import { TeamClasses } from '@/components/TeamClasses'
 import { prisma } from '@/lib/prisma'
 import { GetClassesResponse } from '@/models/team'
 import { Course, Team } from '@prisma/client'
 import dayjs from 'dayjs'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { ArrowUUpLeft } from 'phosphor-react'
+import { ArrowUUpLeft, FileArrowDown } from 'phosphor-react'
 
 interface UniqueTeamProps {
   classes: GetClassesResponse[]
@@ -22,9 +25,31 @@ export default function UniqueTeam({ classes, course, team }: UniqueTeamProps) {
         </button>
         <div className="flex flex-col gap-2">
           <h1 className="font-bold text-2xl">Aulas da turma {team.teamName}</h1>
-          <span className="text-neutral-600 text-sm">Informática</span>
+          <span className="text-neutral-600 text-sm">{course.courseName}</span>
         </div>
       </header>
+      <Accordion
+        contents={classes.map((teamClass) => {
+          return {
+            title: dayjs(dayjs().isoWeekday(teamClass.weekDay)).format('dddd'),
+            value: String(teamClass.weekDay),
+            content: (
+              <TeamClasses
+                classes={teamClass.classes.map((dayClass) => {
+                  return {
+                    hour: dayjs(dayClass.hour).toDate(),
+                    class: dayClass.name,
+                    id: dayClass.id,
+                  }
+                })}
+              />
+            ),
+          }
+        })}
+      />
+      <Button className="bg-amber-500 w-80">
+        Baixar Aulas <FileArrowDown size={18} />
+      </Button>
     </div>
   )
 }
