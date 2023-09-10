@@ -3,10 +3,6 @@ import background from '@/assets/background-home.png'
 import { GoogleLogo } from 'phosphor-react'
 import { signIn } from 'next-auth/react'
 import { Button } from '@/components/Button'
-import { GetServerSideProps } from 'next'
-import { getServerSession } from 'next-auth'
-import { prisma } from '@/lib/prisma'
-import { buildNextAuthOptions } from './api/auth/[...nextauth].api'
 
 export default function Home() {
   return (
@@ -41,37 +37,4 @@ export default function Home() {
       </main>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getServerSession(
-    req,
-    res,
-    buildNextAuthOptions(req, res),
-  )
-
-  if (!session?.user || !session.user.email) {
-    return {
-      props: {},
-    }
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  })
-
-  if (!user) {
-    return {
-      props: {},
-    }
-  }
-
-  return {
-    props: {},
-    redirect: {
-      destination: user.teamId ? '/home' : '/register/form-step',
-    },
-  }
 }

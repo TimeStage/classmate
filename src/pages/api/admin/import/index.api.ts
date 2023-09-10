@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isAuthenticated } from '@/middlewares/verify-auth-admin'
 import { importExcelRequestSchema } from '@/validators/admin'
 import { RowModel } from 'exceljs'
 import {
@@ -29,8 +28,6 @@ export default async function ImportExcel(
     if (req.method !== 'POST') {
       return res.status(405).end()
     }
-
-    await isAuthenticated(req, res)
 
     const { rows: rowsFromBody } = importExcelRequestSchema.parse(req.body)
 

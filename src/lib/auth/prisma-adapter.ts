@@ -7,7 +7,7 @@ export function PrismaAdapter(
 ): Adapter {
   return {
     async createUser(user) {
-      const prismaUser = await prisma.user.create({
+      const { email, ...prismaUser } = await prisma.user.create({
         data: {
           name: user.name,
           email: user.email,
@@ -16,11 +16,8 @@ export function PrismaAdapter(
       })
 
       return {
-        id: prismaUser.id,
-        name: prismaUser.name,
-        email: prismaUser.email!,
-        image: prismaUser.image,
-        emailVerified: null,
+        email: email!,
+        ...prismaUser,
       }
     },
     async getUser(id) {
@@ -32,12 +29,12 @@ export function PrismaAdapter(
       if (!user) {
         return null
       }
+
+      const { email, ...prismaUser } = user
+
       return {
-        id: user.id,
-        name: user.name,
         email: user.email!,
-        emailVerified: null,
-        image: user.image,
+        ...prismaUser,
       }
     },
     async getUserByEmail(email) {
@@ -49,12 +46,10 @@ export function PrismaAdapter(
       if (!user) {
         return null
       }
+      const { email: prismaEmail, ...prismaUser } = user
       return {
-        id: user.id,
-        name: user.name,
-        email: user.email!,
-        emailVerified: null,
-        image: user.image,
+        email: prismaEmail!,
+        ...prismaUser,
       }
     },
     async getUserByAccount({ providerAccountId, provider }) {
@@ -72,13 +67,12 @@ export function PrismaAdapter(
       if (!account) {
         return null
       }
-      const { user } = account
+      const {
+        user: { email, ...user },
+      } = account
       return {
-        id: user.id,
-        name: user.name,
-        email: user.email!,
-        emailVerified: null,
-        image: user.image!,
+        email: email!,
+        ...user,
       }
     },
     async updateUser(user) {
@@ -92,12 +86,12 @@ export function PrismaAdapter(
           image: user.image,
         },
       })
+
+      const { email, ...userPrisma } = prismaUser
+
       return {
-        id: prismaUser.id,
-        name: prismaUser.name,
         email: prismaUser.email!,
-        emailVerified: null,
-        image: prismaUser.image!,
+        ...userPrisma,
       }
     },
     async linkAccount(account) {
@@ -145,7 +139,10 @@ export function PrismaAdapter(
         return null
       }
 
-      const { user, ...session } = prismaSession
+      const {
+        user: { email, ...user },
+        ...session
+      } = prismaSession
 
       return {
         session: {
@@ -154,11 +151,8 @@ export function PrismaAdapter(
           sessionToken: session.sessionToken,
         },
         user: {
-          id: user.id,
-          name: user.name,
-          email: user.email!,
-          emailVerified: null,
-          image: user.image!,
+          email: email!,
+          ...user,
         },
       }
     },

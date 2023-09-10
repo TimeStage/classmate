@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/middlewares/verify-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function GetAll(
@@ -10,8 +9,6 @@ export default async function GetAll(
     if (req.method !== 'GET') {
       return res.status(405).end()
     }
-
-    await isAuthenticated(req, res)
 
     const { team } = req.query
 

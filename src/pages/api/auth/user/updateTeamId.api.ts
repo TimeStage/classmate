@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/middlewares/verify-auth'
 import { updateClassSchema } from '@/validators/updateClass'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -11,8 +10,6 @@ export default async function Handler(
     if (req.method !== 'PUT') {
       return res.status(405).end()
     }
-
-    await isAuthenticated(req, res)
 
     const { teamId, userEmail } = updateClassSchema.parse(req.body)
 

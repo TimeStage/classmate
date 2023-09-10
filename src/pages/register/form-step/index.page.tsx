@@ -1,8 +1,6 @@
 import { Button } from '@/components/Button'
 import { Select } from '@/components/Select'
-
 import { prisma } from '@/lib/prisma'
-import { GetTeamResponse } from '@/models/team'
 import { Course } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { GetServerSideProps } from 'next'
@@ -77,7 +75,7 @@ export default function FormStep({ courses, user }: FormStepProps) {
 
   return (
     <div
-      className={` flex flex-col justify-center items-center gap-16 px-8 w-full h-full `}
+      className={` flex flex-col justify-center items-center gap-16 w-full h-full `}
     >
       <header className="flex flex-col max-w-xl w-full gap-6 text-gray-100 ">
         <h1 className="font-bold text-2xl">Você está quase lá!</h1>
@@ -153,39 +151,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     res,
     buildNextAuthOptions(req, res),
   )
-
-  if (!session?.user || !session.user.email) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/',
-      },
-    }
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  })
-
-  if (!user) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/',
-      },
-    }
-  }
-
-  if (user.teamId) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/home',
-      },
-    }
-  }
 
   return {
     props: { courses, user: session?.user },

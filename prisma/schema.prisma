@@ -66,6 +66,12 @@ enum Season {
   NOCTURNAL
 }
 
+enum Role {
+  ADMIN
+  STUDENT
+  TEATCHER
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String?
@@ -73,6 +79,7 @@ model User {
   emailVerified DateTime?
   image         String?
   teamId        String?
+  role          Role      @default(STUDENT)
 
   accounts Account[]
   sessions Session[]
