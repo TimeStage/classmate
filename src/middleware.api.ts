@@ -1,5 +1,8 @@
 import { getSession } from 'next-auth/react'
 import { NextRequest, NextResponse } from 'next/server'
+import { PagesMiddleware } from './middlewares/pages'
+import { AdminMiddleware } from './middlewares/admin'
+import { ApiMiddleware } from './middlewares/api'
 
 export async function middleware(req: NextRequest) {
   const session = await getSession({
@@ -10,50 +13,15 @@ export async function middleware(req: NextRequest) {
     },
   })
 
-  if (req.nextUrl.pathname.startsWith('/api/auth')) {
-    return
-  }
+  let NextResponse: NextResponse | undefined
 
-  if (req.nextUrl.pathname.startsWith('/api')) {
-    if (!session) {
-      return new NextResponse(null, { status: 401 })
-    }
-  }
+  NextResponse = ApiMiddleware(req, session)
 
-  if (req.nextUrl.pathname.includes('/admin')) {
-    if (session?.user.role === 'ADMIN') {
-      return
-    }
-    return NextResponse.redirect(new URL('/home', req.url))
-  } else {
-    if (!req.nextUrl.pathname.includes('/api')) {
-      if (!session) {
-        if (req.nextUrl.pathname !== '/') {
-          return NextResponse.redirect(new URL('/', req.url))
-        }
-        return
-      }
+  NextResponse = AdminMiddleware(req, session)
 
-      if (!session.user.teamId) {
-        if (req.nextUrl.pathname !== '/register/form-step') {
-          console.log(req.nextUrl.pathname)
+  NextResponse = PagesMiddleware(req, session)
 
-          console.log(session)
-
-          return NextResponse.redirect(new URL('/register/form-step', req.url))
-        }
-      }
-      if (
-        !!session.user.teamId &&
-        req.nextUrl.pathname === '/register/form-step'
-      ) {
-        return NextResponse.redirect(new URL('/home', req.url))
-      }
-      if (req.nextUrl.pathname === '/') {
-        return NextResponse.redirect(new URL('/home', req.url))
-      }
-    }
-  }
+  return NextResponse
 }
 
 export const config = {

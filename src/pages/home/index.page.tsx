@@ -16,8 +16,6 @@ interface HomeProps {
 }
 
 export default function Home({ user, classes }: HomeProps) {
-  console.log(user, classes)
-
   return (
     <div
       className={`w-full h-full flex flex-col justify-start  items-center gap-8  `}
