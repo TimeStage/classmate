@@ -13,6 +13,7 @@ export default function AdminPage() {
 
   return (
     <main className="py-10">
+      <ImportExcel />
       <div className="flex flex-col gap-10">
         <h2 className="text-gray-100 font-bold text-3xl">
           Menu de acesso rápido

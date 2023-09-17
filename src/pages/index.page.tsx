@@ -15,9 +15,9 @@ export default function Home() {
         alt=""
       />
       <main
-        className={`w-screen h-screen flex justify-center items-center font-roboto`}
+        className={`w-full h-screen flex justify-center items-center font-roboto`}
       >
-        <div className="bg-zinc-900 flex flex-col justify-center items-center p-6 rounded-lg gap-8">
+        <div className="bg-zinc-900 flex flex-col justify-center items-center rounded-lg gap-8">
           <h1 className="text-gray-100 font-bold text-5xl ">CEDUP CLASS</h1>
           <div className="flex flex-col justify-center items-center gap-2 w-full">
             <Button

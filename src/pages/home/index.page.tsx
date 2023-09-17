@@ -16,12 +16,14 @@ interface HomeProps {
 }
 
 export default function Home({ user, classes }: HomeProps) {
+  console.log(user, classes)
+
   return (
     <div
       className={`w-full h-full flex flex-col justify-start  items-center gap-8  `}
     >
       <div className="flex flex-col max-w-xl w-full gap-6 text-gray-100">
-        <h1 className="font-bold text-2xl">Olá {user.name}</h1>
+        <h1 className="font-bold text-2xl">Olá, {user.name}</h1>
         <p className="font-semibold text-base">Aqui estão suas aulas!</p>
       </div>
       <main className="flex flex-col justify-center items-center w-full">

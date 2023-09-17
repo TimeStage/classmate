@@ -10,37 +10,48 @@ export async function middleware(req: NextRequest) {
     },
   })
 
+  if (req.nextUrl.pathname.startsWith('/api/auth')) {
+    return
+  }
+
   if (req.nextUrl.pathname.startsWith('/api')) {
     if (!session) {
       return new NextResponse(null, { status: 401 })
     }
   }
 
-  if (req.nextUrl.pathname.startsWith('/admin')) {
-    if (session?.user.role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/home', req.url))
-    }
-  } else {
-    if (!session) {
-      if (req.nextUrl.pathname !== '/') {
-        return NextResponse.redirect(new URL('/', req.url))
-      }
+  if (req.nextUrl.pathname.includes('/admin')) {
+    if (session?.user.role === 'ADMIN') {
       return
     }
-
-    if (!session.user.teamId) {
-      if (req.nextUrl.pathname !== '/register/form-step') {
-        return NextResponse.redirect(new URL('/register/form-step', req.url))
+    return NextResponse.redirect(new URL('/home', req.url))
+  } else {
+    if (!req.nextUrl.pathname.includes('/api')) {
+      if (!session) {
+        if (req.nextUrl.pathname !== '/') {
+          return NextResponse.redirect(new URL('/', req.url))
+        }
+        return
       }
-    }
-    if (
-      !!session.user.teamId &&
-      req.nextUrl.pathname === '/register/form-step'
-    ) {
-      return NextResponse.redirect(new URL('/home', req.url))
-    }
-    if (req.nextUrl.pathname === '/') {
-      return NextResponse.redirect(new URL('/home', req.url))
+
+      if (!session.user.teamId) {
+        if (req.nextUrl.pathname !== '/register/form-step') {
+          console.log(req.nextUrl.pathname)
+
+          console.log(session)
+
+          return NextResponse.redirect(new URL('/register/form-step', req.url))
+        }
+      }
+      if (
+        !!session.user.teamId &&
+        req.nextUrl.pathname === '/register/form-step'
+      ) {
+        return NextResponse.redirect(new URL('/home', req.url))
+      }
+      if (req.nextUrl.pathname === '/') {
+        return NextResponse.redirect(new URL('/home', req.url))
+      }
     }
   }
 }
