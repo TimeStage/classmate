@@ -8,12 +8,20 @@ interface SelectProps extends SelectR.SelectProps {
   placeholder: string
 }
 
-export function Select({ values, placeholder, ...props }: SelectProps) {
+export function Select({
+  values,
+  placeholder,
+  disabled,
+  ...props
+}: SelectProps) {
   return (
-    <SelectR.Root {...props}>
-      <SelectR.Trigger className="bg-gray-900 flex justify-between items-center rounded-md w-full text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
+    <SelectR.Root disabled={disabled} {...props}>
+      <SelectR.Trigger className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
         <SelectR.Value placeholder={placeholder} />
-        <SelectR.Icon className="text-white" asChild>
+        <SelectR.Icon
+          className={`text-white ${disabled ? 'hidden' : 'flex'}`}
+          asChild
+        >
           <CaretDown size={24} />
         </SelectR.Icon>
       </SelectR.Trigger>

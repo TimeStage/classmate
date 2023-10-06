@@ -18,10 +18,6 @@ export function buildNextAuthOptions(
     ],
     pages: {
       signIn: '/',
-      // signOut: '/',
-      // newUser: '/',
-      // error: '/',
-      // verifyRequest: '/',
     },
 
     callbacks: {
