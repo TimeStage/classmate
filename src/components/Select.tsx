@@ -6,24 +6,28 @@ interface SelectProps extends SelectR.SelectProps {
     name: string
   }[]
   placeholder: string
+  hasIcon?: boolean
 }
 
 export function Select({
   values,
   placeholder,
   disabled,
+  hasIcon = true,
   ...props
 }: SelectProps) {
   return (
     <SelectR.Root disabled={disabled} {...props}>
       <SelectR.Trigger className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
         <SelectR.Value placeholder={placeholder} />
-        <SelectR.Icon
-          className={`text-white ${disabled ? 'hidden' : 'flex'}`}
-          asChild
-        >
-          <CaretDown size={24} />
-        </SelectR.Icon>
+        {hasIcon && (
+          <SelectR.Icon
+            className={`text-white ${disabled ? 'hidden' : 'flex'}`}
+            asChild
+          >
+            <CaretDown size={24} />
+          </SelectR.Icon>
+        )}
       </SelectR.Trigger>
 
       <SelectR.Portal>

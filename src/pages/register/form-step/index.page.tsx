@@ -20,7 +20,6 @@ interface FormStepProps {
 }
 
 const formDataSchema = z.object({
-  userEmail: z.string().email(),
   teamId: z
     .string({
       required_error: 'Selecione uma turma',
@@ -58,17 +57,15 @@ export default function FormStep({ courses, user }: FormStepProps) {
   } = useForm<FormData>({
     resolver: zodResolver(formDataSchema),
     values: {
-      userEmail: user.email ?? '',
       teamId: selectedTeamId,
     },
   })
 
   async function onSubmit(data: FormData) {
-    const { userEmail, teamId } = data
+    const { teamId } = data
 
     await userPutTeamId({
       teamId,
-      userEmail,
     })
     router.push('/home')
   }
