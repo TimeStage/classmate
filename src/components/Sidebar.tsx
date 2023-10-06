@@ -19,7 +19,7 @@ export function Sidebar() {
   return (
     <>
       <button
-        className={`fixed top-5 left-5 text-white z-20 ${
+        className={`fixed top-5 left-5 md:hidden text-white z-20 ${
           pathname === '/' && 'hidden'
         }`}
         onClick={() => setIsOpen((state) => !state)}
@@ -29,9 +29,15 @@ export function Sidebar() {
       <aside
         className={`fixed top-0 left-0 h-screen bg-gray-800 w-full transition-transform ease-in-out duration-300 transform z-10 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        }  md:h-fit md:translate-x-0 md:bg-transparent md:flex md:w-full md:justify-between md:py-4 md:px-9`}
       >
-        <nav className="flex flex-col mt-32 gap-10 ps-14 items-start justify-center">
+        <Link
+          href={`/home`}
+          className="hidden font-bold text-2xl text-gray-100 md:flex"
+        >
+          CEDUP Class
+        </Link>
+        <nav className="flex flex-col  mt-32 gap-10 ps-14 items-start justify-center md:flex-row md:ps-0 md:mt-0">
           <Link href={`/home`} className={buttonClassName}>
             <House size={24} />
             <span>Sua turma</span>
