@@ -2,53 +2,51 @@ import { Select } from '@/components/Select'
 import { prisma } from '@/lib/prisma'
 import { GetServerSideProps } from 'next'
 import { getServerSession } from 'next-auth'
-import { Bug, Check, PencilSimpleLine } from 'phosphor-react'
+import { Bug, PencilSimpleLine } from 'phosphor-react'
 import { buildNextAuthOptions } from '../api/auth/[...nextauth].api'
 import { Course, Team, User } from '@prisma/client'
 import { Button } from '@/components/Button'
 import { useState } from 'react'
 import { updateUser } from '@/services/api/requests/patch'
 import { toast } from 'react-toastify'
-import { Spinner } from '@/components/Spinner'
 import { useQuery } from '@tanstack/react-query'
 import { teamsGetByCourse } from '@/services/api/requests/get'
+import { FormInputCourse } from './components/FormInputCourse'
+import { FormInputName } from './components/FormInputName'
+import { FormInputTeam } from './components/FormInputTeam'
 
 interface ConfigProps {
   user: User
   courses: Course[]
-  teams: Team[]
+  userTeam: Team
 }
 
-interface EditableOptionsProps {
+export interface EditableOptionsProps {
   name: string
   courseId: string
   teamId: string
 }
 
-export default function Config({ courses, user, teams }: ConfigProps) {
+export default function Config({
+  courses,
+  user,
+  userTeam: userTeamFromServer,
+}: ConfigProps) {
   const [editableOptions, setEditableOptions] = useState(
     {} as EditableOptionsProps,
   )
   const [isFetching, setIsFetching] = useState(false)
-
-  const [rerenderTeamInput, setRerenderTeamInput] = useState(false)
-
-  const { data: localTeams } = useQuery(
-    [
-      'teams',
-      editableOptions.courseId ??
-        teams.find((team) => team.id === user.teamId)?.courseId,
-    ],
+  const [userTeam, setUserTeam] = useState(userTeamFromServer)
+  const { data: teams, isFetching: localTeamsFetching } = useQuery(
+    ['teams', editableOptions.courseId ?? userTeam.courseId],
     async () => {
       const teams = await teamsGetByCourse({
-        courseId: editableOptions.courseId,
+        courseId: editableOptions.courseId
+          ? editableOptions.courseId
+          : userTeam.courseId,
       })
-      setRerenderTeamInput(false)
 
       return teams
-    },
-    {
-      enabled: !!editableOptions.courseId,
     },
   )
 
@@ -76,208 +74,34 @@ export default function Config({ courses, user, teams }: ConfigProps) {
     }
   }
 
-  const teamsToTeamsInput =
-    localTeams?.map((team) => {
-      return {
-        id: team.id,
-        name: team.teamName,
-      }
-    }) ??
-    teams.map((team) => {
-      return {
-        id: team.id,
-        name: team.teamName,
-      }
-    })
-
   return (
     <main className="flex flex-col gap-6 w-full">
       <h2 className="text-stone-400 text-xl">Informações pessoais</h2>
-      <div className="flex flex-col gap-1 relative">
-        <label className="text-gray-100 font-bold text-xs" htmlFor="name">
-          Nome
-        </label>
-        <input
-          disabled={!editableOptions.name}
-          className="px-4 py-3 placeholder:text-sm bg-gray-900 rounded-md leading-6 text-gray-100 disabled:text-neutral-600"
-          type="text"
-          id="name"
-          onChange={(event) => {
-            setEditableOptions(({ name, ...state }) => {
-              return {
-                ...state,
-                name: event.target.value,
-              }
-            })
-          }}
-          defaultValue={user.name ?? 'Insira seu nome!'}
-        />
-        <button
-          onClick={() => {
-            if (!editableOptions.name) {
-              setEditableOptions(({ name, ...state }) => {
-                return {
-                  ...state,
-                  name: user.name ?? '',
-                }
-              })
-            }
-            if (!!editableOptions.name && editableOptions.name !== user.name) {
-              handleUpdateUser('name', editableOptions)
-            }
-            if (!!editableOptions.name && editableOptions.name === user.name) {
-              setEditableOptions(({ name, ...state }) => {
-                return {
-                  ...state,
-                  name: '',
-                }
-              })
-            }
-          }}
-          className="absolute bottom-0 right-0 px-4 py-3"
-        >
-          {!editableOptions.name ? (
-            <PencilSimpleLine className="text-white" size={24} />
-          ) : isFetching ? (
-            <Spinner size={24} />
-          ) : (
-            <Check className="text-white" size={24} />
-          )}
-        </button>
-      </div>
-      <div className="flex flex-col gap-1 relative">
-        <label className="text-gray-100 font-bold text-xs" htmlFor="course">
-          Curso
-        </label>
-        <Select
-          hasIcon={false}
-          name="course"
-          disabled={!editableOptions.courseId}
-          placeholder="Selecione um curso"
-          onValueChange={(value) => {
-            setEditableOptions(({ courseId, ...state }) => {
-              return {
-                ...state,
-                courseId: value,
-              }
-            })
-            setRerenderTeamInput(true)
-          }}
-          defaultValue={teams.find((team) => team.id === user.teamId)?.courseId}
-          values={courses.map((course) => {
-            return {
-              id: course.id,
-              name: course.courseName,
-            }
-          })}
-        />
-        <button
-          onClick={() => {
-            if (!editableOptions.courseId) {
-              setEditableOptions(({ courseId, ...state }) => {
-                return {
-                  ...state,
-                  courseId:
-                    teams.find((team) => team.id === user.teamId)?.courseId ??
-                    '',
-                }
-              })
-            }
+      <FormInputName
+        user={user}
+        editableOptions={editableOptions}
+        isLoading={isFetching}
+        setEditableOptions={setEditableOptions}
+        handleUpdateUser={handleUpdateUser}
+      />
+      <FormInputCourse
+        courses={courses}
+        editableOptions={editableOptions}
+        isLoading={isFetching}
+        userTeam={userTeam}
+        setEditableOptions={setEditableOptions}
+      />
+      <FormInputTeam
+        user={user}
+        editableOptions={editableOptions}
+        isLoading={localTeamsFetching || isFetching}
+        teams={teams}
+        userTeam={userTeam}
+        handleUpdateUser={handleUpdateUser}
+        setEditableOptions={setEditableOptions}
+        setUserTeam={setUserTeam}
+      />
 
-            if (
-              !!editableOptions.courseId &&
-              editableOptions.courseId ===
-                teams.find((team) => team.id === user.teamId)?.courseId
-            ) {
-              setEditableOptions(({ courseId, ...state }) => {
-                return {
-                  ...state,
-                  courseId: '',
-                }
-              })
-            }
-          }}
-          className="absolute bottom-0 right-0 px-4 py-3"
-        >
-          {!editableOptions.courseId ? (
-            <PencilSimpleLine className="text-white" size={24} />
-          ) : isFetching ? (
-            <Spinner size={24} />
-          ) : (
-            <Check className="text-white" size={24} />
-          )}
-        </button>
-      </div>
-      <div className="flex flex-col gap-1 relative">
-        <label className="text-gray-100 font-bold text-xs" htmlFor="team">
-          Turma
-        </label>
-        {!rerenderTeamInput ? (
-          <Select
-            name="team"
-            hasIcon={false}
-            disabled={!editableOptions.teamId}
-            placeholder="Selecione uma turma"
-            onValueChange={(value) => {
-              setEditableOptions(({ teamId, ...state }) => {
-                return {
-                  ...state,
-                  teamId: value,
-                }
-              })
-            }}
-            defaultValue={
-              teamsToTeamsInput.find((team) => team.id === user.teamId)?.id ??
-              undefined
-            }
-            values={teamsToTeamsInput}
-          />
-        ) : (
-          <div className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
-            <Spinner size={24} />
-          </div>
-        )}
-
-        <button
-          onClick={() => {
-            if (!editableOptions.teamId) {
-              setEditableOptions(({ teamId, ...state }) => {
-                return {
-                  ...state,
-                  teamId: user.teamId ?? '',
-                }
-              })
-            }
-            if (
-              !!editableOptions.teamId &&
-              editableOptions.teamId !== user.teamId
-            ) {
-              handleUpdateUser('teamId', editableOptions)
-            }
-
-            if (
-              !!editableOptions.teamId &&
-              editableOptions.teamId === user.teamId
-            ) {
-              setEditableOptions(({ teamId, ...state }) => {
-                return {
-                  ...state,
-                  teamId: '',
-                }
-              })
-            }
-          }}
-          className="absolute bottom-0 right-0 px-4 py-3"
-        >
-          {!editableOptions.teamId ? (
-            <PencilSimpleLine className="text-white" size={24} />
-          ) : isFetching ? (
-            <Spinner size={24} />
-          ) : (
-            <Check className="text-white" size={24} />
-          )}
-        </button>
-      </div>
       <hr className="border-neutral-600" />
       <h2 className="text-stone-400 text-xl">Informações do aplicativo</h2>
       <div className="flex flex-col gap-1 relative">
@@ -335,16 +159,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   })
 
-  const teamsByCourseId = await prisma.team.findMany({
-    where: {
-      courseId: uniqueTeam?.courseId,
-    },
-    orderBy: {
-      teamName: 'asc',
-    },
-  })
-
   return {
-    props: { courses, user: session?.user, teams: teamsByCourseId },
+    props: { courses, user: session?.user, userTeam: uniqueTeam },
   }
 }

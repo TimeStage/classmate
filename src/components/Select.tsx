@@ -1,5 +1,6 @@
 import * as SelectR from '@radix-ui/react-select'
 import { CaretDown } from 'phosphor-react'
+import { Spinner } from './Spinner'
 interface SelectProps extends SelectR.SelectProps {
   values: {
     id: string
@@ -7,6 +8,7 @@ interface SelectProps extends SelectR.SelectProps {
   }[]
   placeholder: string
   hasIcon?: boolean
+  isLoading?: boolean
 }
 
 export function Select({
@@ -14,20 +16,27 @@ export function Select({
   placeholder,
   disabled,
   hasIcon = true,
+  isLoading = false,
   ...props
 }: SelectProps) {
+  if (isLoading) {
+    return (
+      <div className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 cursor-not-allowed text-neutral-600 text-sm px-4 py-3 ">
+        <Spinner size={24} />
+      </div>
+    )
+  }
+
   return (
     <SelectR.Root disabled={disabled} {...props}>
       <SelectR.Trigger className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
         <SelectR.Value placeholder={placeholder} />
-        {hasIcon && (
-          <SelectR.Icon
-            className={`text-white ${disabled ? 'hidden' : 'flex'}`}
-            asChild
-          >
-            <CaretDown size={24} />
-          </SelectR.Icon>
-        )}
+        <SelectR.Icon
+          className={`text-white ${disabled || !hasIcon ? 'hidden' : 'flex'}`}
+          asChild
+        >
+          <CaretDown size={24} />
+        </SelectR.Icon>
       </SelectR.Trigger>
 
       <SelectR.Portal>
