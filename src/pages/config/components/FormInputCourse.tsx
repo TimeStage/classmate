@@ -74,7 +74,9 @@ export function FormInputCourse({
           if (
             !!editableOptions.courseId &&
             editableOptions.courseId !== userTeam.courseId &&
-            (!editableOptions.teamId || editableOptions.teamId === userTeam.id)
+            (!editableOptions.teamId ||
+              editableOptions.teamId === userTeam.id ||
+              editableOptions.teamId !== userTeam.id)
           ) {
             setRefetchCourses(true)
             setTimeout(() => {
