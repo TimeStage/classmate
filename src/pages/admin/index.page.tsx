@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { ImportExcel } from './components/ImportExcel'
+import { ImportExcel } from './import/components/ImportExcel'
 import { teamsGetAll } from '@/services/api/requests/get'
-import { TeamCard } from '@/components/TeamCard'
 import { FastAccessCard } from './components/FastAccessCard'
+import { UploadSimple } from 'phosphor-react'
 
 export default function AdminPage() {
   const { data: teams } = useQuery(['AllTeams'], async () => {
@@ -13,13 +13,14 @@ export default function AdminPage() {
 
   return (
     <main className="py-10">
-      <ImportExcel />
       <div className="flex flex-col gap-10">
-        <h2 className="text-gray-100 font-bold text-3xl">
+        <h1 className="text-gray-100 font-bold text-3xl">
           Menu de acesso rápido
-        </h2>
+        </h1>
         <div className="grid grid-cols-4 gap-5">
-          <FastAccessCard>Importar cronôgrama</FastAccessCard>
+          <FastAccessCard href="/admin/import">
+            <UploadSimple size={32} /> Importar cronôgrama
+          </FastAccessCard>
           {/* {teams?.map((team) => (
             <TeamCard
               key={team.id}

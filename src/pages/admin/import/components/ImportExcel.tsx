@@ -1,7 +1,7 @@
 import { adminImportFile } from '@/services/api/requests/post'
-import Excel from 'exceljs'
 import { UploadSimple } from 'phosphor-react'
 import { useState } from 'react'
+import Excel from 'exceljs'
 import { toast } from 'react-toastify'
 
 export function ImportExcel() {
@@ -23,14 +23,13 @@ export function ImportExcel() {
   }
 
   const selectedColor = file ? 'sky-500' : 'amber-500'
-
   return (
-    <div className="flex ">
+    <div className="flex flex-col w-full h-full">
       <div
-        className={`flex gap-4 justify-center rounded-s-md items-center border py-2 w-64 relative border-dashed border-${selectedColor} `}
+        className={`flex flex-col gap-4 justify-center rounded-t-md items-center p-20 relative border-4 hover:opacity-80 transition-all w-full border-b-0 border-dashed border-${selectedColor} `}
       >
         <UploadSimple className={`text-${selectedColor}`} size={32} />
-        <p className={`text-${selectedColor} font-bold text-xs`}>
+        <p className={`text-${selectedColor} font-bold text-lg`}>
           Arraste e solte!
         </p>
         <input
@@ -55,7 +54,7 @@ export function ImportExcel() {
       </div>
       <button
         disabled={!file}
-        className={`flex flex-col h-full transition-all hover:opacity-70 justify-center items-center bg-amber-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold px-10 py-5 rounded-e-md`}
+        className={`flex flex-col h-full transition-all hover:opacity-70 justify-center items-center bg-amber-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold px-10 py-5 rounded-b-md`}
         onClick={handleUploadFile}
       >
         Importar

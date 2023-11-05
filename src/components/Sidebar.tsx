@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { SignOut, House, UsersFour, Gear, List } from 'phosphor-react'
+import {
+  SignOut,
+  House,
+  UsersFour,
+  Gear,
+  List,
+  ChalkboardTeacher,
+} from 'phosphor-react'
 import Link from 'next/link'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const { pathname, push } = useRouter()
+
+  const { data: session } = useSession()
 
   useEffect(() => {
     setIsOpen(false)
@@ -46,6 +55,18 @@ export function Sidebar() {
             <UsersFour size={24} />
             <span>Pesquisar por turma</span>
           </Link>
+
+          {session?.user.role === 'ADMIN' && (
+            <Link href={`/admin`} className={buttonClassName}>
+              <ChalkboardTeacher size={24} />
+              <span>Painel do administrador</span>
+            </Link>
+          )}
+
+          <Link href={`/config`} className={buttonClassName}>
+            <Gear size={24} />
+            <span>Configurações</span>
+          </Link>
           <button
             onClick={async () => {
               await signOut()
@@ -56,10 +77,6 @@ export function Sidebar() {
             <SignOut size={24} />
             <span>Sair</span>
           </button>
-          <Link href={`/config`} className={buttonClassName}>
-            <Gear size={24} />
-            <span>Configurações</span>
-          </Link>
         </nav>
       </aside>
     </>
