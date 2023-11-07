@@ -7,7 +7,7 @@ import { EditableOptionsProps } from '../index.page'
 interface FormInputCoursesProps {
   isLoading: boolean
   courses: Course[]
-  userTeam: Team
+  userTeam: Team | null
   editableOptions: EditableOptionsProps
   setEditableOptions: Dispatch<SetStateAction<EditableOptionsProps>>
 }
@@ -40,7 +40,7 @@ export function FormInputCourse({
             }
           })
         }}
-        defaultValue={userTeam.courseId}
+        defaultValue={userTeam?.courseId}
         values={courses.map((course) => {
           return {
             id: course.id,
@@ -54,14 +54,14 @@ export function FormInputCourse({
             setEditableOptions(({ courseId, ...state }) => {
               return {
                 ...state,
-                courseId: userTeam.courseId ?? '',
+                courseId: userTeam?.courseId ?? '',
               }
             })
           }
 
           if (
             !!editableOptions.courseId &&
-            editableOptions.courseId === userTeam.courseId
+            editableOptions.courseId === userTeam?.courseId
           ) {
             setEditableOptions(({ courseId, ...state }) => {
               return {
@@ -73,10 +73,10 @@ export function FormInputCourse({
 
           if (
             !!editableOptions.courseId &&
-            editableOptions.courseId !== userTeam.courseId &&
+            editableOptions.courseId !== userTeam?.courseId &&
             (!editableOptions.teamId ||
-              editableOptions.teamId === userTeam.id ||
-              editableOptions.teamId !== userTeam.id)
+              editableOptions.teamId === userTeam?.id ||
+              editableOptions.teamId !== userTeam?.id)
           ) {
             setRefetchCourses(true)
             setTimeout(() => {

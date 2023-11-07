@@ -10,6 +10,7 @@ import {
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { Role } from '@prisma/client'
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -47,16 +48,19 @@ export function Sidebar() {
           CEDUP Class
         </Link>
         <nav className="flex flex-col  mt-32 gap-10 ps-14 items-start justify-center md:flex-row md:ps-0 md:mt-0">
-          <Link href={`/home`} className={buttonClassName}>
-            <House size={24} />
-            <span>Sua turma</span>
-          </Link>
+          {session?.user.role !== Role.ADMIN && (
+            <Link href={`/home`} className={buttonClassName}>
+              <House size={24} />
+              <span>Sua turma</span>
+            </Link>
+          )}
+
           <Link href={`/team`} className={buttonClassName}>
             <UsersFour size={24} />
             <span>Pesquisar por turma</span>
           </Link>
 
-          {session?.user.role === 'ADMIN' && (
+          {session?.user.role === Role.ADMIN && (
             <Link href={`/admin`} className={buttonClassName}>
               <ChalkboardTeacher size={24} />
               <span>Painel do administrador</span>

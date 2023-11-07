@@ -4,7 +4,7 @@ export interface Team {
 }
 
 export interface Class {
-  value: string
+  name: string
   hour: Date
 }
 
@@ -17,10 +17,10 @@ export interface TeamWithClasses extends Team {
   weekDays: WeekDay[]
 }
 
-export interface FormattedCourses {
+export interface Course {
   name: string
   teams: {
-    value: string
+    name: string
     weekDays: WeekDay[]
   }[]
 }

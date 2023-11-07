@@ -1,7 +1,6 @@
-import { ArrowBendUpLeft, DownloadSimple } from 'phosphor-react'
+import { ArrowBendUpLeft } from 'phosphor-react'
 import { ImportExcel } from './components/ImportExcel'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { DownloadExample } from './components/DownloadExample'
 
 export default function ImportPage() {

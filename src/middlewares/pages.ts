@@ -1,8 +1,12 @@
+import { Role } from '@prisma/client'
 import { Session } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export function PagesMiddleware(req: NextRequest, session: Session | null) {
-  if (!req.nextUrl.pathname.includes('/api')) {
+  if (
+    !req.nextUrl.pathname.includes('/api') &&
+    !(session?.user.role === Role.ADMIN)
+  ) {
     if (!session) {
       if (req.nextUrl.pathname !== '/') {
         return NextResponse.redirect(new URL('/', req.url))

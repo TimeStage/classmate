@@ -18,7 +18,7 @@ import { FormInputTeam } from './components/FormInputTeam'
 interface ConfigProps {
   user: User
   courses: Course[]
-  userTeam: Team
+  userTeam: Team | null
 }
 
 export interface EditableOptionsProps {
@@ -38,15 +38,18 @@ export default function Config({
   const [isFetching, setIsFetching] = useState(false)
   const [userTeam, setUserTeam] = useState(userTeamFromServer)
   const { data: teams, isFetching: localTeamsFetching } = useQuery(
-    ['teams', editableOptions.courseId ?? userTeam.courseId],
+    ['teams', editableOptions.courseId ?? userTeam?.courseId],
     async () => {
-      const teams = await teamsGetByCourse({
-        courseId: editableOptions.courseId
-          ? editableOptions.courseId
-          : userTeam.courseId,
-      })
+      if (editableOptions.courseId && userTeam?.courseId) {
+        const teams = await teamsGetByCourse({
+          courseId: editableOptions.courseId
+            ? editableOptions.courseId
+            : userTeam.courseId,
+        })
 
-      return teams
+        return teams
+      }
+      return undefined
     },
   )
 

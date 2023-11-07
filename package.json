@@ -25,7 +25,7 @@
     "dayjs": "^1.11.9",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
-    "exceljs": "^4.3.0",
+    "exceljs": "^4.4.0",
     "jsonwebtoken": "^9.0.1",
     "next": "^13.4.10",
     "next-auth": "^4.22.3",

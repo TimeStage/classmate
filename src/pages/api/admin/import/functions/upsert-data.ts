@@ -1,9 +1,9 @@
 import { prisma } from '@/lib/prisma'
-import { FormattedCourses } from '../models/classes'
+import { Course } from '@/models/classes'
 import { toWeekDay } from './to-week-day'
 import dayjs from 'dayjs'
 
-export async function upsertData(courses: FormattedCourses[]) {
+export async function upsertData(courses: Course[]) {
   for (const course of courses) {
     const upsertedCourse = await prisma.course.upsert({
       create: {
@@ -20,16 +20,16 @@ export async function upsertData(courses: FormattedCourses[]) {
     for (const team of course.teams) {
       const upsertedTeam = await prisma.team.upsert({
         create: {
-          teamName: team.value,
+          teamName: team.name,
           courseId: upsertedCourse.id,
         },
         update: {
-          teamName: team.value,
+          teamName: team.name,
           courseId: upsertedCourse.id,
         },
         where: {
           teamName_courseId: {
-            teamName: team.value,
+            teamName: team.name,
             courseId: upsertedCourse.id,
           },
         },
@@ -68,13 +68,13 @@ export async function upsertData(courses: FormattedCourses[]) {
           await prisma.class.upsert({
             create: {
               hour: teamClass.hour,
-              name: teamClass.value,
+              name: teamClass.name,
               season,
               weekDayId: upsertedWeekDay.id,
             },
             update: {
               hour: teamClass.hour,
-              name: teamClass.value,
+              name: teamClass.name,
               season,
               weekDayId: upsertedWeekDay.id,
             },

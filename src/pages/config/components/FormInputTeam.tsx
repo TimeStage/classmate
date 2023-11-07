@@ -6,12 +6,12 @@ import { EditableOptionsProps } from '../index.page'
 
 interface FormInputCoursesProps {
   isLoading: boolean
-  userTeam: Team
+  userTeam: Team | null
   editableOptions: EditableOptionsProps
   teams: Team[] | undefined
   user: User
   setEditableOptions: Dispatch<SetStateAction<EditableOptionsProps>>
-  setUserTeam: Dispatch<SetStateAction<Team>>
+  setUserTeam: Dispatch<SetStateAction<Team | null>>
   handleUpdateUser: (
     infoToUpdate: keyof EditableOptionsProps,
     editableOptions: EditableOptionsProps,
@@ -29,11 +29,11 @@ export function FormInputTeam({
   setUserTeam,
 }: FormInputCoursesProps) {
   const defaultValueToSelect =
-    userTeam.courseId ===
+    userTeam?.courseId ===
       (editableOptions.courseId
         ? editableOptions.courseId
-        : userTeam.courseId) && !editableOptions.teamId
-      ? userTeam.id
+        : userTeam?.courseId) && !editableOptions.teamId
+      ? userTeam?.id
       : teams?.find((team) => team.id === editableOptions.teamId)?.id ||
         undefined
   return (
@@ -83,7 +83,7 @@ export function FormInputTeam({
             const searchedTeam = teams?.find(
               (team) => team.id === editableOptions.teamId,
             )
-            setUserTeam((_) => {
+            setUserTeam(() => {
               if (searchedTeam) {
                 return searchedTeam
               }
