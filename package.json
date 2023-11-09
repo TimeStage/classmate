@@ -46,7 +46,6 @@
     "@rocketseat/eslint-config": "^2.0.1",
     "@types/formidable": "^3.4.1",
     "@types/jsonwebtoken": "^9.0.2",
-    "prisma": "^5.0.0",
-    "prisma-erd-generator": "^1.11.1"
+    "prisma": "^5.0.0"
   }
 }
