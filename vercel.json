@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "api/admin/import/index.api.ts": {
+        "maxDuration": 60
+      }
+    }
+  }
