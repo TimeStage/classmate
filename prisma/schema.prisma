@@ -95,7 +95,7 @@ model VerificationToken {
 
 model Account {
   id                String  @id @default(uuid())
-  userId            String
+  userId            String  @unique
   type              String
   provider          String
   providerAccountId String
@@ -116,7 +116,7 @@ model Account {
 model Session {
   id           String   @id @default(uuid())
   sessionToken String   @unique
-  userId       String
+  userId       String   @unique
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
