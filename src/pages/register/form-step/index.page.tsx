@@ -141,13 +141,31 @@ export default function FormStep({ courses, user }: FormStepProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const courses = await prisma.course.findMany()
-
   const session = await getServerSession(
     req,
     res,
     buildNextAuthOptions(req, res),
   )
+
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+      },
+    }
+  }
+
+  if (session.user.teamId) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/home',
+      },
+    }
+  }
+
+  const courses = await prisma.course.findMany()
 
   return {
     props: { courses, user: session?.user },

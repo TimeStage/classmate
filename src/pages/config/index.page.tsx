@@ -156,6 +156,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     buildNextAuthOptions(req, res),
   )
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+      props: {},
+    }
+  }
+
+  if (!session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/register/form-step',
+      },
+      props: {},
+    }
+  }
+
   const uniqueTeam = await prisma.team.findUnique({
     where: {
       id: String(session?.user.teamId),

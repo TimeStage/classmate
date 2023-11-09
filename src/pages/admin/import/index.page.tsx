@@ -2,6 +2,9 @@ import { ArrowBendUpLeft } from 'phosphor-react'
 import { ImportExcel } from './components/ImportExcel'
 import { useRouter } from 'next/router'
 import { DownloadExample } from './components/DownloadExample'
+import { GetServerSideProps } from 'next'
+import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api'
+import { getServerSession } from 'next-auth'
 
 export default function ImportPage() {
   const { back } = useRouter()
@@ -26,4 +29,24 @@ export default function ImportPage() {
       </div>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
+  if (session?.user.role !== 'ADMIN') {
+    return {
+      redirect: {
+        destination: '/home',
+      },
+      props: {},
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

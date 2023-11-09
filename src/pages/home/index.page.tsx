@@ -63,6 +63,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     buildNextAuthOptions(req, res),
   )
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+      props: {},
+    }
+  }
+
+  if (!session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/register/form-step',
+      },
+      props: {},
+    }
+  }
+
   const weekDays = await prisma.weekDay.findMany({
     where: {
       teamId: session?.user.teamId ?? undefined,

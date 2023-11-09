@@ -1,7 +1,6 @@
-import { Session } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function ApiMiddleware(req: NextRequest, session: Session | null) {
+export function ApiMiddleware(req: NextRequest, session: boolean) {
   if (req.nextUrl.pathname.startsWith('/api/auth')) {
     return NextResponse.next()
   }

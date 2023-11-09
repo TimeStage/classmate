@@ -3,6 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { teamsGetAll } from '@/services/api/requests/get'
 import { ChangeEvent, useState } from 'react'
 import { TeamsSection } from './components/TeamsSection'
+import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '../api/auth/[...nextauth].api'
 
 export default function Team() {
   const [teamSearch, setTeamSearch] = useState('')
@@ -53,4 +56,33 @@ export default function Team() {
       />
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+      props: {},
+    }
+  }
+  if (!session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/register/form-step',
+      },
+      props: {},
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

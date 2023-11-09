@@ -3,9 +3,11 @@ import { Button } from '@/components/Button'
 import { TeamClasses } from '@/components/TeamClasses'
 import { prisma } from '@/lib/prisma'
 import { GetClassesResponse } from '@/models/team'
+import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api'
 import { Course, Team } from '@prisma/client'
 import dayjs from 'dayjs'
 import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
 import { useRouter } from 'next/router'
 import { ArrowUUpLeft, FileArrowDown } from 'phosphor-react'
 
@@ -56,7 +58,34 @@ export default function UniqueTeam({ classes, course, team }: UniqueTeamProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+  res,
+}) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+      props: {},
+    }
+  }
+  if (!session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/register/form-step',
+      },
+      props: {},
+    }
+  }
+
   const { id } = params!
 
   if (typeof id !== 'string') {

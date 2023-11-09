@@ -166,6 +166,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     buildNextAuthOptions(req, res),
   )
 
+  if (session?.user.role !== 'ADMIN') {
+    return {
+      redirect: {
+        destination: '/home',
+      },
+      props: {},
+    }
+  }
+
   const allClasses = await prisma.course.findMany({
     include: {
       Team: {

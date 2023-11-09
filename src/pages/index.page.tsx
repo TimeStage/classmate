@@ -3,6 +3,9 @@ import background from '@/assets/background-home.png'
 import { GoogleLogo } from 'phosphor-react'
 import { signIn } from 'next-auth/react'
 import { Button } from '@/components/Button'
+import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from './api/auth/[...nextauth].api'
 
 export default function Home() {
   return (
@@ -35,4 +38,33 @@ export default function Home() {
       </div>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
+
+  if (session && session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/home',
+      },
+      props: {},
+    }
+  }
+  if (session && !session.user.teamId) {
+    return {
+      redirect: {
+        destination: '/register/form-step',
+      },
+      props: {},
+    }
+  }
+
+  return {
+    props: {},
+  }
 }
