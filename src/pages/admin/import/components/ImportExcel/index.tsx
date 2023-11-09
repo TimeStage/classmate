@@ -132,11 +132,17 @@ export function ImportExcel() {
               ) {
                 weekDayClasses.push({
                   hour: dayjs(String(row.getCell(2).value))
-                    .add(1, 'minute')
-                    .set('s', -28)
-                    .set('D', 1)
-                    .set('M', 0)
-                    .set('y', 0)
+                    .startOf('years')
+                    .set(
+                      'hours',
+                      dayjs(String(row.getCell(2).value))
+                        .add(3, 'hours')
+                        .hour(),
+                    )
+                    .set(
+                      'minutes',
+                      dayjs(String(row.getCell(2).value)).minute() + 7,
+                    )
                     .toDate(),
                   name: String(cell.value),
                 })

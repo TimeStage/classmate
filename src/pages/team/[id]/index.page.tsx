@@ -36,6 +36,8 @@ export default function UniqueTeam({ classes, course, team }: UniqueTeamProps) {
             content: (
               <TeamClasses
                 classes={teamClass.classes.map((dayClass) => {
+                  console.log(dayjs(dayClass.hour).toDate())
+
                   return {
                     hour: dayjs(dayClass.hour).toDate(),
                     class: dayClass.name,
