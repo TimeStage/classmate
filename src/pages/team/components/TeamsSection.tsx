@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { GetAllTeamsResponse } from '@/models/team'
+import Link from 'next/link'
 import { CircleNotch, MagnifyingGlass, SmileySad } from 'phosphor-react'
 
 interface TeamsSectionProps {
@@ -34,13 +35,14 @@ export function TeamsSection({
   return (
     <div className="flex flex-col gap-6 w-full">
       {teams.map((team) => (
-        <div
+        <Link
+          href={`/team/${team.id}`}
           className="flex justify-between items-center bg-amber-500 py-4 px-10 rounded-md text-gray-100 "
           key={team.id}
         >
           <h1 className="text-2xl font-bold">{team.teamName}</h1>
           <span className="text-xl">{team.courseName}</span>
-        </div>
+        </Link>
       ))}
     </div>
   )

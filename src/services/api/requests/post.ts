@@ -1,14 +1,14 @@
-import { Rows } from 'exceljs'
+import { Course } from '@/models/classes'
 import { api } from '..'
 
 interface AdminImportFileProps {
-  rows: Rows[]
+  courses: Course[]
 }
 
-export async function adminImportFile({ rows }: AdminImportFileProps) {
+export async function adminImportFile({ courses }: AdminImportFileProps) {
   try {
     const { data } = await api.post('/admin/import', {
-      rows,
+      courses,
     })
     return data
   } catch (error) {

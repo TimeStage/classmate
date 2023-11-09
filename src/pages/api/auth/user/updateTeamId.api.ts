@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/middlewares/verify-auth'
 import { updateClassSchema } from '@/validators/updateClass'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '../[...nextauth].api'
 
 export default async function Handler(
   req: NextApiRequest,
@@ -12,9 +13,13 @@ export default async function Handler(
       return res.status(405).end()
     }
 
-    await isAuthenticated(req, res)
+    const { teamId } = updateClassSchema.parse(req.body)
 
-    const { teamId, userEmail } = updateClassSchema.parse(req.body)
+    const session = await getServerSession(
+      req,
+      res,
+      buildNextAuthOptions(req, res),
+    )
 
     const team = await prisma.team.findUnique({
       where: {
@@ -28,21 +33,9 @@ export default async function Handler(
       })
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userEmail,
-      },
-    })
-
-    if (!user) {
-      return res.status(404).json({
-        error: 'User not found',
-      })
-    }
-
     const userUpdated = await prisma.user.update({
       where: {
-        email: userEmail,
+        id: session?.user.id,
       },
       data: {
         teamId,

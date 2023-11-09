@@ -1,7 +1,3 @@
-import { getServerSession } from 'next-auth'
-import { buildNextAuthOptions } from '../api/auth/[...nextauth].api'
-import { prisma } from '@/lib/prisma'
-import { GetServerSideProps } from 'next'
 import { MagnifyingGlass } from 'phosphor-react'
 import { useQuery } from '@tanstack/react-query'
 import { teamsGetAll } from '@/services/api/requests/get'
@@ -26,7 +22,7 @@ export default function Team() {
 
   return (
     <div
-      className={`w-full h-full flex flex-col justify-start py-24 items-center gap-6 px-8 `}
+      className={`w-full h-full flex flex-col justify-start items-center gap-6  `}
     >
       <div className="w-full relative ">
         <input
@@ -57,50 +53,4 @@ export default function Team() {
       />
     </div>
   )
-}
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getServerSession(
-    req,
-    res,
-    buildNextAuthOptions(req, res),
-  )
-
-  if (!session?.user || !session.user.email) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/',
-      },
-    }
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  })
-
-  if (!user) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/',
-      },
-    }
-  }
-
-  if (!user.teamId) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/register/form-step',
-      },
-    }
-  }
-
-  return {
-    props: {
-      user,
-    },
-  }
 }

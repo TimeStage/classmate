@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { SignOut, House, UsersFour, Gear, List } from 'phosphor-react'
+import {
+  SignOut,
+  House,
+  UsersFour,
+  Gear,
+  List,
+  ChalkboardTeacher,
+} from 'phosphor-react'
 import Link from 'next/link'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { Role } from '@prisma/client'
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const { pathname, push } = useRouter()
+
+  const { data: session } = useSession()
 
   useEffect(() => {
     setIsOpen(false)
@@ -19,7 +29,7 @@ export function Sidebar() {
   return (
     <>
       <button
-        className={`fixed top-5 left-5 text-white z-20 ${
+        className={`fixed top-5 left-5 md:hidden text-white z-20 ${
           pathname === '/' && 'hidden'
         }`}
         onClick={() => setIsOpen((state) => !state)}
@@ -29,16 +39,37 @@ export function Sidebar() {
       <aside
         className={`fixed top-0 left-0 h-screen bg-gray-800 w-full transition-transform ease-in-out duration-300 transform z-10 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        }  md:h-fit md:translate-x-0 md:bg-transparent md:flex md:w-full md:justify-between md:py-4 md:px-9`}
       >
-        <nav className="flex flex-col mt-32 gap-10 ps-14 items-start justify-center">
-          <Link href={`/home`} className={buttonClassName}>
-            <House size={24} />
-            <span>Sua turma</span>
-          </Link>
+        <Link
+          href={`/home`}
+          className="hidden font-bold text-2xl text-gray-100 md:flex"
+        >
+          CEDUP Class
+        </Link>
+        <nav className="flex flex-col  mt-32 gap-10 ps-14 items-start justify-center md:flex-row md:ps-0 md:mt-0">
+          {session?.user.role !== Role.ADMIN && (
+            <Link href={`/home`} className={buttonClassName}>
+              <House size={24} />
+              <span>Sua turma</span>
+            </Link>
+          )}
+
           <Link href={`/team`} className={buttonClassName}>
             <UsersFour size={24} />
             <span>Pesquisar por turma</span>
+          </Link>
+
+          {session?.user.role === Role.ADMIN && (
+            <Link href={`/admin`} className={buttonClassName}>
+              <ChalkboardTeacher size={24} />
+              <span>Painel do administrador</span>
+            </Link>
+          )}
+
+          <Link href={`/config`} className={buttonClassName}>
+            <Gear size={24} />
+            <span>Configurações</span>
           </Link>
           <button
             onClick={async () => {
@@ -50,10 +81,6 @@ export function Sidebar() {
             <SignOut size={24} />
             <span>Sair</span>
           </button>
-          <Link href={`/config`} className={buttonClassName}>
-            <Gear size={24} />
-            <span>Configurações</span>
-          </Link>
         </nav>
       </aside>
     </>

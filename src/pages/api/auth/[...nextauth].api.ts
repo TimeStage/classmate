@@ -16,13 +16,22 @@ export function buildNextAuthOptions(
         clientSecret: process.env.GOOGLE_SECRET_ID!,
       }),
     ],
+    pages: {
+      signIn: '/',
+    },
+
     callbacks: {
+      async jwt({ token, account, user }) {
+        return { ...token }
+      },
+
       async signIn({ account }) {
         if (account?.provider === 'google') {
           return true
         }
-        return false
+        return '/'
       },
+
       async session({ session, user }) {
         return {
           ...session,

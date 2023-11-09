@@ -1,6 +1,5 @@
 import React, { ReactNode, useState } from 'react'
 import * as AccordionR from '@radix-ui/react-accordion'
-import { ChevronDownIcon } from '@radix-ui/react-icons'
 import { Item } from './components/Item'
 
 interface AccordionProps {
