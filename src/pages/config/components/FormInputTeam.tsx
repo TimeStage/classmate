@@ -36,6 +36,7 @@ export function FormInputTeam({
       ? userTeam?.id
       : teams?.find((team) => team.id === editableOptions.teamId)?.id ||
         undefined
+
   return (
     <div className="flex flex-col gap-1 relative">
       <label className="text-gray-100 font-bold text-xs" htmlFor="team">

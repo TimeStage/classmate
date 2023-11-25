@@ -40,11 +40,13 @@ export default function Config({
   const { data: teams, isFetching: localTeamsFetching } = useQuery(
     ['teams', editableOptions.courseId ?? userTeam?.courseId],
     async () => {
-      if (editableOptions.courseId && userTeam?.courseId) {
+      if (editableOptions.courseId || userTeam?.courseId) {
         const teams = await teamsGetByCourse({
           courseId: editableOptions.courseId
             ? editableOptions.courseId
-            : userTeam.courseId,
+            : userTeam?.courseId
+            ? userTeam.courseId
+            : courses[0].id,
         })
 
         return teams
