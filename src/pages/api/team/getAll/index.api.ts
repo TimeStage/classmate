@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '../../auth/[...nextauth].api'
 
 export default async function GetAll(
   req: NextApiRequest,
@@ -16,6 +18,16 @@ export default async function GetAll(
       return res.status(400).json({
         error: 'Invalid team name',
       })
+    }
+
+    const session = await getServerSession(
+      req,
+      res,
+      buildNextAuthOptions(req, res),
+    )
+
+    if (!session) {
+      return res.status(401).end()
     }
 
     const teams = await prisma.team.findMany({

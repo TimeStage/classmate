@@ -11,6 +11,15 @@ datasource db {
   relationMode = "prisma"
 }
 
+model Report {
+  id          String @id @default(uuid())
+  userId      String
+  description String @db.Text
+  user        User   @relation(fields: [userId], references: [id])
+
+  @@map("reports")
+}
+
 model Course {
   id         String @id @default(uuid())
   courseName String @unique
@@ -80,6 +89,7 @@ model User {
   accounts Account[]
   sessions Session[]
   teams    Team?     @relation(fields: [teamId], references: [id])
+  report   Report[]
 
   @@map("users")
 }

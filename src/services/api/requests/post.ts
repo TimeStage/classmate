@@ -16,3 +16,21 @@ export async function adminImportFile({ courses }: AdminImportFileProps) {
     throw new Error('Error on importing file')
   }
 }
+
+interface NewReportProps {
+  userId: string
+  description: string
+}
+
+export async function newReport({ description, userId }: NewReportProps) {
+  try {
+    const { data } = await api.post('/report', {
+      description,
+      userId,
+    })
+    return data
+  } catch (error) {
+    console.error(error)
+    throw new Error('Error on posting new report')
+  }
+}

@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { updateClassSchema } from '@/validators/updateClass'
 import { updateUser } from '@/validators/updateUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
@@ -21,6 +20,10 @@ export default async function Handler(
       res,
       buildNextAuthOptions(req, res),
     )
+
+    if (!session) {
+      return res.status(401).end()
+    }
 
     if (teamId) {
       const team = await prisma.team.findUnique({

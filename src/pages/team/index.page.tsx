@@ -25,30 +25,37 @@ export default function Team() {
 
   return (
     <div
-      className={`w-full h-full flex flex-col justify-start items-center gap-6  `}
+      className={`flex h-full w-full flex-col items-center justify-start gap-6 md:m-auto md:max-w-lg `}
     >
-      <div className="w-full relative ">
-        <input
-          type="text"
-          className="bg-gray-900 w-full py-3 px-4 text-sm text-gray-100 rounded-lg"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setTeamSearch(event.target.value)
-          }}
-          value={teamSearch}
-        />
-        <button
-          onClick={() => setFilter(teamSearch)}
-          className="absolute right-0 h-full px-4 text-gray-100"
-        >
-          <MagnifyingGlass size={24} />
-        </button>
+      <div className="flex w-full flex-col gap-1">
+        <label className="text-xs font-bold text-gray-100" htmlFor="search">
+          Pesquisar turma
+        </label>
+        <div className="relative w-full ">
+          <input
+            name="search"
+            id="search"
+            type="text"
+            className="w-full rounded-lg bg-gray-900 px-4 py-3 text-sm text-gray-100"
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setTeamSearch(event.target.value)
+            }}
+            value={teamSearch}
+          />
+          <button
+            onClick={() => setFilter(teamSearch)}
+            className="absolute right-0 h-full px-4 text-gray-100"
+          >
+            <MagnifyingGlass size={24} />
+          </button>
+        </div>
       </div>
-      <h1 className="text-base self-start text-stone-400">
+      <h1 className="self-start text-base text-stone-400">
         {teams.length > 0
           ? 'Aqui estão suas turmas'
           : 'Não foram encontrados resultados'}
       </h1>
-      <hr className="border w-full border-stone-600" />
+      <hr className="w-full border border-stone-600" />
       <TeamsSection
         handleChangeFilter={handleChangeFilter}
         teams={teams}

@@ -20,7 +20,7 @@ export function TeamsSection({
 
   if (teams.length === 0) {
     return (
-      <div className="flex flex-col gap-7 w-full justify-center items-center">
+      <div className="flex w-full flex-col items-center justify-center gap-7">
         <SmileySad className="text-stone-400" size={192} />
         <Button
           onClick={() => handleChangeFilter('')}
@@ -33,11 +33,11 @@ export function TeamsSection({
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex w-full flex-col gap-6">
       {teams.map((team) => (
         <Link
           href={`/team/${team.id}`}
-          className="flex justify-between items-center bg-amber-500 py-4 px-10 rounded-md text-gray-100 "
+          className="flex items-center justify-between rounded-md bg-amber-500 px-10 py-4 text-gray-100 "
           key={team.id}
         >
           <h1 className="text-2xl font-bold">{team.teamName}</h1>

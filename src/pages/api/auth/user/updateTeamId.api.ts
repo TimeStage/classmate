@@ -20,6 +20,9 @@ export default async function Handler(
       res,
       buildNextAuthOptions(req, res),
     )
+    if (!session) {
+      return res.status(401).end()
+    }
 
     const team = await prisma.team.findUnique({
       where: {

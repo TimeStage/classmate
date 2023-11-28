@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '../../auth/[...nextauth].api'
 
 export default async function GetByCourse(
   req: NextApiRequest,
@@ -16,6 +18,16 @@ export default async function GetByCourse(
       return res.status(400).json({
         error: 'Course ID not provided',
       })
+    }
+
+    const session = await getServerSession(
+      req,
+      res,
+      buildNextAuthOptions(req, res),
+    )
+
+    if (!session) {
+      return res.status(401).end()
     }
 
     const course = await prisma.course.findUnique({

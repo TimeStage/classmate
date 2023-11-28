@@ -14,6 +14,7 @@ import { teamsGetByCourse } from '@/services/api/requests/get'
 import { FormInputCourse } from './components/FormInputCourse'
 import { FormInputName } from './components/FormInputName'
 import { FormInputTeam } from './components/FormInputTeam'
+import { newReport } from '@/services/api/requests/post'
 
 interface ConfigProps {
   user: User
@@ -37,6 +38,8 @@ export default function Config({
   )
   const [isFetching, setIsFetching] = useState(false)
   const [userTeam, setUserTeam] = useState(userTeamFromServer)
+
+  const [reportDescription, setReportDescription] = useState('')
   const { data: teams, isFetching: localTeamsFetching } = useQuery(
     ['teams', editableOptions.courseId ?? userTeam?.courseId],
     async () => {
@@ -55,6 +58,24 @@ export default function Config({
     },
   )
 
+  async function onSendNewReport(description: string, userId: string) {
+    if (!description) {
+      toast.error('Por favor adicione uma descrição para reportar um problema!')
+    }
+
+    try {
+      await newReport({
+        description,
+        userId,
+      })
+      setReportDescription('')
+      toast.success('Reportado com sucesso!')
+    } catch (error) {
+      console.error(error)
+      toast.success('Erro ao reportar problema!')
+    }
+  }
+
   async function handleUpdateUser(
     infoToUpdate: keyof EditableOptionsProps,
     editableOptions: EditableOptionsProps,
@@ -62,7 +83,7 @@ export default function Config({
     try {
       setIsFetching(true)
       await updateUser({
-        [infoToUpdate]: editableOptions[infoToUpdate],
+        [infoToUpdate]: editableOptions[infoToUpdate].trim(),
       })
       toast.success('Informação do usuário atualizado com sucesso!')
       setEditableOptions((state) => {
@@ -80,7 +101,7 @@ export default function Config({
   }
 
   return (
-    <main className="flex w-full flex-col gap-6">
+    <main className="flex w-full flex-col gap-6 md:m-auto  md:max-w-lg">
       <h2 className="text-xl text-stone-400">Informações pessoais</h2>
       <FormInputName
         user={user}
@@ -134,12 +155,22 @@ export default function Config({
           Descrição
         </label>
         <textarea
+          value={reportDescription}
+          onChange={(event) => {
+            setReportDescription(event.target.value)
+          }}
           rows={5}
-          className="rounded-md bg-gray-900 px-4 py-3 leading-6 placeholder:text-sm disabled:text-neutral-600"
+          className="rounded-md bg-gray-900 px-4 py-3 leading-6 text-white placeholder:text-sm disabled:text-neutral-600"
           name="desc"
         />
       </div>
-      <Button className="bg-neutral-600">
+      <Button
+        onClick={() => {
+          onSendNewReport(reportDescription, user.id)
+        }}
+        disabled={!reportDescription}
+        className="bg-amber-500 disabled:bg-neutral-600"
+      >
         Reportar <Bug size={18} />
       </Button>
       <span className="text-sm font-bold text-neutral-600">

@@ -22,6 +22,10 @@ export default async function GetAll(
       buildNextAuthOptions(req, res),
     )
 
+    if (!session) {
+      return res.status(401).end()
+    }
+
     const weekDays = await prisma.weekDay.findMany({
       where: {
         teamId: String(id),

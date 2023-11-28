@@ -18,12 +18,12 @@ export default function ImportPage() {
           <h1 className="text-3xl font-bold text-gray-100">
             Importe sua planilha de aulas!
           </h1>
-          <p className="px-2\ text-xs font-medium text-gray-500">
+          <p className="px-2 text-xs font-medium text-gray-500">
             A planilha deve seguir o padrão pré-definido pelo sistema!
           </p>
         </div>
       </header>
-      <div className="flex h-full w-full gap-20 px-32">
+      <div className="flex h-full w-full gap-20 px-32 max-sm:flex-col max-sm:px-0">
         <ImportExcel />
         <DownloadExample />
       </div>

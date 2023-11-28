@@ -35,7 +35,7 @@ export function FormInputName({
           setEditableOptions(({ name, ...state }) => {
             return {
               ...state,
-              name: event.target.value,
+              name: event.target.value !== '' ? event.target.value : ' ',
             }
           })
         }}

@@ -24,7 +24,7 @@ export default function UniqueTeam({ classes, course, team }: UniqueTeamProps) {
   const { back } = useRouter()
 
   return (
-    <div className="flex flex-col gap-8 text-gray-100">
+    <div className="flex flex-col gap-8 text-gray-100 md:m-auto md:max-w-lg">
       <header className="flex gap-5 ">
         <button className="flex items-start justify-center" onClick={back}>
           <ArrowUUpLeft size={30} />

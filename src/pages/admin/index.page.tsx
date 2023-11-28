@@ -1,5 +1,5 @@
 import { FastAccessCard } from './components/FastAccessCard'
-import { PencilSimpleLine, UploadSimple } from 'phosphor-react'
+import { ClipboardText, PencilSimpleLine, UploadSimple } from 'phosphor-react'
 import { GetServerSideProps } from 'next'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
@@ -34,13 +34,16 @@ export default function AdminPage({ classes }: AdminPageProps) {
 
   return (
     <main className="flex max-w-[100vw] flex-col gap-10 overflow-hidden py-10">
-      <div className="flex flex-col gap-10">
-        <h1 className="text-3xl font-bold text-gray-100">
+      <div className="flex flex-col gap-10 ">
+        <h1 className="text-3xl font-bold text-gray-100 max-sm:text-center">
           Menu de acesso rápido
         </h1>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-4 gap-5 max-sm:flex max-sm:flex-col">
           <FastAccessCard href="/admin/import">
             <UploadSimple size={32} /> Importar cronôgrama
+          </FastAccessCard>
+          <FastAccessCard href="/admin/users">
+            <ClipboardText size={32} /> Gerenciar administradores
           </FastAccessCard>
           <FastAccessCard href="/admin/timeline">
             <PencilSimpleLine size={32} /> Criar/Editar cronôgrama
@@ -59,7 +62,7 @@ export default function AdminPage({ classes }: AdminPageProps) {
               <div
                 ref={ref}
                 {...events}
-                className="flex w-full items-center justify-between overflow-x-auto bg-yellow-300 text-lg font-semibold"
+                className="flex w-full items-start justify-between overflow-x-auto bg-yellow-300 text-lg font-semibold"
               >
                 {classes.map((class1) => {
                   return (
@@ -73,7 +76,7 @@ export default function AdminPage({ classes }: AdminPageProps) {
                           return (
                             <div
                               key={team.id}
-                              className="flex w-96 flex-col gap-2 bg-slate-950 p-2  text-gray-100"
+                              className="flex w-96 flex-col gap-2 bg-slate-950 p-2 text-gray-100  max-sm:w-80"
                             >
                               <h1 className="text-xl font-medium">
                                 {team.teamName}
