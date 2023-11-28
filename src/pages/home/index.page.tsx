@@ -7,15 +7,20 @@ import { FileArrowDown } from 'phosphor-react'
 import { Accordion } from '@/components/Accordion'
 import { TeamClasses } from '@/components/TeamClasses'
 import { GetClassesResponse } from '@/models/team'
-import { User } from '@prisma/client'
+import { Team, User } from '@prisma/client'
 import dayjs from 'dayjs'
+import { useRef } from 'react'
+import { downloadHtml } from '@/utils/downloadHtml'
 
 interface HomeProps {
   user: User
   classes: GetClassesResponse[]
+  team: Team
 }
 
-export default function Home({ user, classes }: HomeProps) {
+export default function Home({ user, classes, team }: HomeProps) {
+  const downloadClassesRef = useRef<HTMLDivElement>(null)
+
   return (
     <div
       className={`flex h-full w-full flex-col items-center  justify-start gap-8  `}
@@ -47,7 +52,46 @@ export default function Home({ user, classes }: HomeProps) {
               }
             })}
           />
-          <Button className="w-80 bg-amber-500">
+          <div
+            ref={downloadClassesRef}
+            className={`absolute left-0 top-0 -z-50 hidden w-full max-w-md flex-col overflow-hidden bg-white p-5 text-black data-[print=true]:flex`}
+          >
+            <h1 className="text-lg font-bold">{team.teamName}</h1>
+            {classes.map((teamClass) => {
+              return (
+                <div className="border-2 border-black" key={teamClass.id}>
+                  <h1 className="border border-black p-1 text-sm font-bold">
+                    {dayjs(dayjs().isoWeekday(teamClass.weekDay))
+                      .format('dddd')
+                      .toLocaleUpperCase()}
+                  </h1>
+                  <div className="flex flex-col text-xs">
+                    {teamClass.classes
+                      .filter((teamCls) => teamCls.name.trim() !== '-')
+                      .map((teamCls) => {
+                        return (
+                          <div
+                            className="flex items-center justify-between border border-black px-2 py-1"
+                            key={teamCls.id}
+                          >
+                            <time className="font-bold">
+                              {dayjs(teamCls.hour).format('HH:mm')}
+                            </time>{' '}
+                            <h1>{teamCls.name}</h1>
+                          </div>
+                        )
+                      })}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <Button
+            onClick={async () => {
+              await downloadHtml(team.teamName, downloadClassesRef)
+            }}
+            className="w-80 bg-amber-500"
+          >
             Baixar Aulas <FileArrowDown size={18} />
           </Button>
         </div>
@@ -80,6 +124,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       props: {},
     }
   }
+
+  const team = await prisma.team.findUnique({
+    where: {
+      id: session.user.teamId,
+    },
+  })
 
   const weekDays = await prisma.weekDay.findMany({
     where: {
@@ -115,6 +165,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: {
       user: session?.user,
       classes,
+      team,
     },
   }
 }
