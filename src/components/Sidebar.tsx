@@ -29,7 +29,7 @@ export function Sidebar() {
   return (
     <>
       <button
-        className={`fixed top-5 left-5 md:hidden text-white z-20 ${
+        className={`fixed left-5 top-5 z-20 text-white md:hidden ${
           pathname === '/' && 'hidden'
         }`}
         onClick={() => setIsOpen((state) => !state)}
@@ -37,17 +37,17 @@ export function Sidebar() {
         <List size={40} />
       </button>
       <aside
-        className={`fixed top-0 left-0 h-screen bg-gray-800 w-full transition-transform ease-in-out duration-300 transform z-10 ${
+        className={`fixed left-0 top-0 z-10 h-screen w-full transform bg-gray-800 transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        }  md:h-fit md:translate-x-0 md:bg-transparent md:flex md:w-full md:justify-between md:py-4 md:px-9`}
+        }  md:flex md:h-fit md:w-full md:translate-x-0 md:justify-between md:bg-transparent md:px-9 md:py-4`}
       >
         <Link
           href={`/home`}
-          className="hidden font-bold text-2xl text-gray-100 md:flex"
+          className="hidden text-2xl font-bold text-gray-100 md:flex"
         >
           CEDUP Class
         </Link>
-        <nav className="flex flex-col  mt-32 gap-10 ps-14 items-start justify-center md:flex-row md:ps-0 md:mt-0">
+        <nav className="mt-32 flex  flex-col items-start justify-center gap-10 ps-14 md:mt-0 md:flex-row md:ps-0">
           {session?.user.role !== Role.ADMIN && (
             <Link href={`/home`} className={buttonClassName}>
               <House size={24} />

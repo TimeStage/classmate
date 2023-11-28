@@ -21,7 +21,7 @@ export function Select({
 }: SelectProps) {
   if (isLoading) {
     return (
-      <div className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 cursor-not-allowed text-neutral-600 text-sm px-4 py-3 ">
+      <div className="flex w-full cursor-not-allowed items-center justify-between rounded-md bg-gray-900 px-4 py-3 text-sm leading-6 text-neutral-600 ">
         <Spinner size={24} />
       </div>
     )
@@ -29,7 +29,7 @@ export function Select({
 
   return (
     <SelectR.Root disabled={disabled} {...props}>
-      <SelectR.Trigger className="bg-gray-900 flex justify-between items-center rounded-md w-full leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 text-sm px-4 py-3 ">
+      <SelectR.Trigger className="flex w-full items-center justify-between rounded-md bg-gray-900 px-4 py-3 text-sm leading-6 text-white disabled:cursor-not-allowed disabled:text-neutral-600 ">
         <SelectR.Value placeholder={placeholder} />
         <SelectR.Icon
           className={`text-white ${disabled || !hasIcon ? 'hidden' : 'flex'}`}
@@ -42,10 +42,10 @@ export function Select({
       <SelectR.Portal>
         <SelectR.Content>
           {/* <Select.ScrollUpButton /> */}
-          <SelectR.Viewport className="bg-gray-900 flex flex-col gap-4 p-5 rounded-md">
+          <SelectR.Viewport className="flex flex-col gap-4 rounded-md bg-gray-900 p-5">
             {values.map((value) => (
               <SelectR.Item
-                className="text-white disabled:text-neutral-600 cursor-pointer text-sm  "
+                className="cursor-pointer text-sm text-white disabled:text-neutral-600  "
                 key={value.id}
                 value={value.id}
               >

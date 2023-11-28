@@ -1,16 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
-import { teamsGetAll } from '@/services/api/requests/get'
 import { FastAccessCard } from './components/FastAccessCard'
-import { UploadSimple } from 'phosphor-react'
+import { PencilSimpleLine, UploadSimple } from 'phosphor-react'
 import { GetServerSideProps } from 'next'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { buildNextAuthOptions } from '../api/auth/[...nextauth].api'
 import { Class, Course, Team, WeekDay } from '@prisma/client'
-import { ClassesTable } from './components/ClassesTable'
 import { TeamClasses } from '@/components/TeamClasses'
-import { Accordion } from '@/components/Accordion'
 import dayjs from 'dayjs'
+import { useRef } from 'react'
+import { useDraggable } from 'react-use-draggable-scroll'
 
 interface WeekDays {
   weekDay: WeekDay
@@ -30,45 +28,43 @@ interface AdminPageProps {
 }
 
 export default function AdminPage({ classes }: AdminPageProps) {
-  const { data: teams } = useQuery(['AllTeams'], async () => {
-    const teams = await teamsGetAll()
-
-    return teams
-  })
+  const ref =
+    useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>
+  const { events } = useDraggable(ref)
 
   return (
-    <main className="flex flex-col py-10 gap-10 overflow-hidden">
+    <main className="flex max-w-[100vw] flex-col gap-10 overflow-hidden py-10">
       <div className="flex flex-col gap-10">
-        <h1 className="text-gray-100 font-bold text-3xl">
+        <h1 className="text-3xl font-bold text-gray-100">
           Menu de acesso rápido
         </h1>
         <div className="grid grid-cols-4 gap-5">
           <FastAccessCard href="/admin/import">
             <UploadSimple size={32} /> Importar cronôgrama
           </FastAccessCard>
-          {/* {teams?.map((team) => (
-            <TeamCard
-              key={team.id}
-              teamName={team.teamName}
-              courseName={team.courseName}
-            />
-          ))} */}
+          <FastAccessCard href="/admin/timeline">
+            <PencilSimpleLine size={32} /> Criar/Editar cronôgrama
+          </FastAccessCard>
         </div>
       </div>
       <div className="flex flex-col gap-10">
-        <h1 className="text-gray-100 font-bold text-3xl">Aulas</h1>
-        <div className="flex flex-col gap-5 max-w-screen-xl overflow-x-auto">
-          <div className="bg-slate-900 rounded-lg p-5 flex flex-col gap-5 max-w-none ">
-            <h1 className="font-bold text-2xl  text-gray-50">Cedup CLASS</h1>
+        <h1 className="text-3xl font-bold text-gray-100">Aulas</h1>
+        <div className="flex w-full max-w-[calc(100vw-5.04rem)] flex-col gap-5 ">
+          <div className="flex flex-col gap-5  rounded-lg bg-slate-900 p-5 ">
+            <h1 className="text-2xl font-bold  text-gray-50">Cedup CLASS</h1>
             <header>
-              <h1 className="bg-amber-500 text-2xl font-semibold py-2 px-5">
+              <h1 className="bg-amber-500 px-5 py-2 text-2xl font-semibold">
                 Turmas
               </h1>
-              <div className="flex w-full items-center bg-yellow-300 text-lg font-semibold justify-between ">
+              <div
+                ref={ref}
+                {...events}
+                className="flex w-full items-center justify-between overflow-x-auto bg-yellow-300 text-lg font-semibold"
+              >
                 {classes.map((class1) => {
                   return (
                     <div
-                      className="flex flex-col justify-center items-center w-full border-x-2"
+                      className="flex w-max flex-col items-center justify-center border-x-2"
                       key={class1.id}
                     >
                       <h1>{class1.courseName}</h1>
@@ -77,7 +73,7 @@ export default function AdminPage({ classes }: AdminPageProps) {
                           return (
                             <div
                               key={team.id}
-                              className="flex flex-col bg-slate-950 text-gray-100 w-96 p-2  gap-2"
+                              className="flex w-96 flex-col gap-2 bg-slate-950 p-2  text-gray-100"
                             >
                               <h1 className="text-xl font-medium">
                                 {team.teamName}
@@ -86,14 +82,14 @@ export default function AdminPage({ classes }: AdminPageProps) {
                                 {team.WeekDay.map((teamClass) => {
                                   return (
                                     <div key={teamClass.weekDay.id}>
-                                      <h1 className="bg-amber-600 text-slate-200 font-bold w-full p-3 font-roboto flex items-center justify-between">
+                                      <h1 className="flex w-full items-center justify-between bg-amber-600 p-3 font-roboto font-bold text-slate-200">
                                         {dayjs(
                                           dayjs().isoWeekday(
                                             teamClass.weekDay.weekDay,
                                           ),
                                         ).format('dddd')}
                                       </h1>
-                                      <div className="bg-amber-300 w-full data-[state=open]:animate-openAccordion data-[state=closed]:animate-closeAccordion overflow-hidden">
+                                      <div className="w-full overflow-hidden bg-amber-300 data-[state=closed]:animate-closeAccordion data-[state=open]:animate-openAccordion">
                                         <TeamClasses
                                           classes={teamClass.Class.map(
                                             (dayClass) => {
@@ -121,38 +117,6 @@ export default function AdminPage({ classes }: AdminPageProps) {
                 })}
               </div>
             </header>
-            {/* <table className=" ">
-              <thead className="">
-                <tr className="bg-amber-500 text-2xl">
-                  <th colSpan={classes.length}> Turmas</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="bg-yellow-300 text-lg font-semibold ">
-                  {classes.map((class1) => {
-                    return (
-                      <td className="text-center p-2" key={class1.id}>
-                        {class1.courseName}
-                      </td>
-                    )
-                  })}
-                </tr>
-                <tr className="bg-yellow-300 text-lg font-semibold ">
-                  {classes.map((class1) => {
-                    return class1.Team.map((team) => {
-                      return (
-                        <>
-                          <span className="flex flex-col dis p-2 bg-slate-950 text-gray-50">
-                            {' '}
-                            {team.teamName}{' '}
-                          </span>
-                        </>
-                      )
-                    })
-                  })}
-                </tr>
-              </tbody>
-            </table> */}
           </div>
         </div>
       </div>
@@ -181,7 +145,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         include: {
           WeekDay: {
             include: {
-              Class: true,
+              Class: {
+                orderBy: {
+                  hour: 'asc',
+                },
+              },
             },
           },
         },

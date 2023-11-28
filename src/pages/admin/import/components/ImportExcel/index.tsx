@@ -208,17 +208,17 @@ export function ImportExcel() {
   }
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex h-full w-full flex-col">
       <div
         data-loader={loader !== 0 ? 'loading' : 'none'}
-        className={`flex flex-col gap-4 justify-center rounded-t-md data-[loader=loading]:cursor-not-allowed data-[loader=loading]:opacity-70 items-center p-20 relative border-4 hover:opacity-70 transition-all w-full border-b-0 border-dashed border-amber-500 `}
+        className={`relative flex w-full flex-col items-center justify-center gap-4 rounded-t-md border-4 border-b-0 border-dashed border-amber-500 p-20 transition-all hover:opacity-70 data-[loader=loading]:cursor-not-allowed data-[loader=loading]:opacity-70 `}
       >
         <UploadSimple className={`text-amber-500`} size={32} />
-        <p className={`text-amber-500 font-bold text-lg`}>Arraste e solte!</p>
+        <p className={`text-lg font-bold text-amber-500`}>Arraste e solte!</p>
         <SelectedArchive file={file} />
         <input
           disabled={loader !== 0}
-          className="opacity-0 absolute disabled:cursor-not-allowed w-full h-full top-0 left-0 cursor-pointer"
+          className="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
           onChange={(event) => {
             if (event.target.files && event.target.files.length > 0) {
               if (
@@ -241,7 +241,7 @@ export function ImportExcel() {
       </div>
       <button
         disabled={!file || loader !== 0}
-        className={`flex h-full gap-2 transition-all hover:opacity-70 justify-center items-center bg-amber-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold px-10 py-5 rounded-b-md`}
+        className={`flex h-full items-center justify-center gap-2 rounded-b-md bg-amber-500 px-10 py-5 font-semibold text-white transition-all hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-70`}
         onClick={handleUploadFile}
       >
         <ImportButtonLoader loader={loader} />

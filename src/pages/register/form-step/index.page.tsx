@@ -72,20 +72,20 @@ export default function FormStep({ courses, user }: FormStepProps) {
 
   return (
     <div
-      className={` flex flex-col justify-center items-center gap-16 w-full h-full `}
+      className={` flex h-full w-full flex-col items-center justify-center gap-16 `}
     >
-      <header className="flex flex-col max-w-xl w-full gap-6 text-gray-100 ">
-        <h1 className="font-bold text-2xl">Você está quase lá!</h1>
-        <p className="font-semibold text-base">
+      <header className="flex w-full max-w-xl flex-col gap-6 text-gray-100 ">
+        <h1 className="text-2xl font-bold">Você está quase lá!</h1>
+        <p className="text-base font-semibold">
           Agora só falta algumas informações
         </p>
       </header>
-      <main className="flex flex-col justify-center items-center w-full">
+      <main className="flex w-full flex-col items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex justify-center items-center flex-col gap-5 max-w-xl w-full"
+          className="flex w-full max-w-xl flex-col items-center justify-center gap-5"
         >
-          <div className="flex flex-col gap-1 w-full">
+          <div className="flex w-full flex-col gap-1">
             <Select
               onValueChange={(value) => {
                 setSelectedCourseId(value)
@@ -100,7 +100,7 @@ export default function FormStep({ courses, user }: FormStepProps) {
               })}
             />
           </div>
-          <div className="flex flex-col gap-1 w-full">
+          <div className="flex w-full flex-col gap-1">
             <Select
               onValueChange={(value) => {
                 setSelectedTeamId(value)
@@ -120,7 +120,7 @@ export default function FormStep({ courses, user }: FormStepProps) {
                   : []
               }
             />
-            <p className="text-sm text-red-500 pl-2">
+            <p className="pl-2 text-sm text-red-500">
               {errors.teamId?.message}
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function FormStep({ courses, user }: FormStepProps) {
               isSubmitting || isLoading || !selectedCourseId || !selectedTeamId
             }
             type="submit"
-            className="bg-amber-500 w-full"
+            className="w-full bg-amber-500"
           >
             Finalizar
             <ArrowRight size={16} />

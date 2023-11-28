@@ -10,11 +10,11 @@ interface TeamClassesProps {
 
 export function TeamClasses({ classes }: TeamClassesProps) {
   return (
-    <div className="w-full flex flex-col items-center justify-start px-5 py-4 gap-2">
+    <div className="flex w-full flex-col items-center justify-start gap-2 px-5 py-4">
       {classes.map((teamClass) => {
         return (
           <div
-            className="flex justify-between items-center w-full font-bold text-sm text-slate-800"
+            className="flex w-full items-center justify-between text-sm font-bold text-slate-800"
             key={teamClass.id}
           >
             <span>{dayjs(teamClass.hour).format('HH:mm')}</span>

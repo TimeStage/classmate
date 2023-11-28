@@ -10,7 +10,7 @@ export function FastAccessCard({ children, href }: FastAccessCardProps) {
   return (
     <Link
       href={href}
-      className="flex flex-col bg-gray-950 text-gray-100 p-8 font-bold text-xl justify-center items-center gap-4 rounded-xl border transition-all border-amber-500 hover:opacity-70 cursor-pointer"
+      className="flex cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border border-amber-500 bg-gray-950 p-8 text-xl font-bold text-gray-100 transition-all hover:opacity-70"
     >
       {children}
     </Link>

@@ -45,8 +45,8 @@ export default function Config({
           courseId: editableOptions.courseId
             ? editableOptions.courseId
             : userTeam?.courseId
-            ? userTeam.courseId
-            : courses[0].id,
+              ? userTeam.courseId
+              : courses[0].id,
         })
 
         return teams
@@ -80,8 +80,8 @@ export default function Config({
   }
 
   return (
-    <main className="flex flex-col gap-6 w-full">
-      <h2 className="text-stone-400 text-xl">Informações pessoais</h2>
+    <main className="flex w-full flex-col gap-6">
+      <h2 className="text-xl text-stone-400">Informações pessoais</h2>
       <FormInputName
         user={user}
         editableOptions={editableOptions}
@@ -108,9 +108,9 @@ export default function Config({
       />
 
       <hr className="border-neutral-600" />
-      <h2 className="text-stone-400 text-xl">Informações do aplicativo</h2>
-      <div className="flex flex-col gap-1 relative">
-        <label className="text-gray-100 font-bold text-xs" htmlFor="theme">
+      <h2 className="text-xl text-stone-400">Informações do aplicativo</h2>
+      <div className="relative flex flex-col gap-1">
+        <label className="text-xs font-bold text-gray-100" htmlFor="theme">
           Tema
         </label>
         <Select
@@ -128,14 +128,14 @@ export default function Config({
         </button>
       </div>
       <hr className="border-neutral-600" />
-      <h2 className="text-stone-400 text-xl">Reportar bug</h2>
-      <div className="flex flex-col gap-1 relative">
-        <label className="text-gray-100 font-bold text-xs" htmlFor="desc">
+      <h2 className="text-xl text-stone-400">Reportar bug</h2>
+      <div className="relative flex flex-col gap-1">
+        <label className="text-xs font-bold text-gray-100" htmlFor="desc">
           Descrição
         </label>
         <textarea
           rows={5}
-          className="px-4 py-3 placeholder:text-sm bg-gray-900 rounded-md leading-6 disabled:text-neutral-600"
+          className="rounded-md bg-gray-900 px-4 py-3 leading-6 placeholder:text-sm disabled:text-neutral-600"
           name="desc"
         />
       </div>

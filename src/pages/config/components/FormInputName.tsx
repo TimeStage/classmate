@@ -22,13 +22,13 @@ export function FormInputName({
   handleUpdateUser,
 }: FormInputCoursesProps) {
   return (
-    <div className="flex flex-col gap-1 relative">
-      <label className="text-gray-100 font-bold text-xs" htmlFor="name">
+    <div className="relative flex flex-col gap-1">
+      <label className="text-xs font-bold text-gray-100" htmlFor="name">
         Nome
       </label>
       <input
         disabled={!editableOptions.name}
-        className="px-4 py-3 placeholder:text-sm disabled:cursor-not-allowed bg-gray-900 rounded-md leading-6 text-gray-100 disabled:text-neutral-600"
+        className="rounded-md bg-gray-900 px-4 py-3 leading-6 text-gray-100 placeholder:text-sm disabled:cursor-not-allowed disabled:text-neutral-600"
         type="text"
         id="name"
         onChange={(event) => {

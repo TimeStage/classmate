@@ -22,8 +22,8 @@ export function FormInputCourse({
   const [refetchCourses, setRefetchCourses] = useState(false)
 
   return (
-    <div className="flex flex-col gap-1 relative">
-      <label className="text-gray-100 font-bold text-xs" htmlFor="course">
+    <div className="relative flex flex-col gap-1">
+      <label className="text-xs font-bold text-gray-100" htmlFor="course">
         Curso
       </label>
       <Select

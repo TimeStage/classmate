@@ -3,18 +3,18 @@ import { DownloadSimple } from 'phosphor-react'
 
 export function DownloadExample() {
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex h-full w-full flex-col">
       <Link
-        className={`flex flex-col gap-4 justify-center p-20 rounded-t-md border-b-0 items-center relative border-4 hover:opacity-80 transition-all w-full border-dashed border-green-500 `}
+        className={`relative flex w-full flex-col items-center justify-center gap-4 rounded-t-md border-4 border-b-0 border-dashed border-green-500 p-20 transition-all hover:opacity-80 `}
         href={'/uploads/exemplo_de_planilha_de_aulas.xlsx'}
       >
         <DownloadSimple className={`text-green-500`} size={32} />
-        <p className={`text-green-500 font-bold text-lg`}>
+        <p className={`text-lg font-bold text-green-500`}>
           Baixar padrão de planilha
         </p>
       </Link>
       <button
-        className={`flex flex-col h-full transition-all hover:opacity-70 justify-center items-center bg-green-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold px-10 py-5 rounded-b-md`}
+        className={`flex h-full flex-col items-center justify-center rounded-b-md bg-green-500 px-10 py-5 font-semibold text-white transition-all hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-70`}
       >
         Tutorial
       </button>

@@ -18,14 +18,14 @@ interface HomeProps {
 export default function Home({ user, classes }: HomeProps) {
   return (
     <div
-      className={`w-full h-full flex flex-col justify-start  items-center gap-8  `}
+      className={`flex h-full w-full flex-col items-center  justify-start gap-8  `}
     >
-      <div className="flex flex-col max-w-xl w-full gap-6 text-gray-100">
-        <h1 className="font-bold text-2xl">Olá, {user.name}</h1>
-        <p className="font-semibold text-base">Aqui estão suas aulas!</p>
+      <div className="flex w-full max-w-xl flex-col gap-6 text-gray-100">
+        <h1 className="text-2xl font-bold">Olá, {user.name}</h1>
+        <p className="text-base font-semibold">Aqui estão suas aulas!</p>
       </div>
-      <main className="flex flex-col justify-center items-center w-full">
-        <div className="flex justify-center items-center flex-col gap-5 max-w-xl w-full">
+      <main className="flex w-full flex-col items-center justify-center">
+        <div className="flex w-full max-w-xl flex-col items-center justify-center gap-5">
           <Accordion
             contents={classes.map((teamClass) => {
               return {
@@ -47,7 +47,7 @@ export default function Home({ user, classes }: HomeProps) {
               }
             })}
           />
-          <Button className="bg-amber-500 w-80">
+          <Button className="w-80 bg-amber-500">
             Baixar Aulas <FileArrowDown size={18} />
           </Button>
         </div>
