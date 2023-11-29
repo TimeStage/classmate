@@ -25,12 +25,13 @@ export function Sidebar() {
 
   const buttonClassName =
     'flex gap-2 items-center text-gray-100 font-bold text-xl cursor-pointer hover:opacity-70 transition-all'
+console.log(pathname === '/');
 
   return (
     <>
       <button
         className={`fixed left-5 top-5 z-20 text-white md:hidden ${
-          pathname === '/' && 'hidden'
+          pathname === '/' && 'hidden' 
         }`}
         onClick={() => setIsOpen((state) => !state)}
       >
@@ -39,7 +40,9 @@ export function Sidebar() {
       <aside
         className={`fixed left-0 top-0 z-10 h-screen w-full transform bg-gray-800 transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        }  md:flex md:h-fit md:w-full md:translate-x-0 md:justify-between md:bg-transparent md:px-9 md:py-4`}
+        }  md:flex md:h-fit md:w-full md:translate-x-0 md:justify-between md:bg-transparent md:px-9 md:py-4 ${
+          pathname === '/' && 'opacity-0'
+        }`}
       >
         <Link
           href={`/home`}
