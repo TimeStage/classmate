@@ -22,15 +22,15 @@ interface updateUserRoleProps {
   role: Role
 }
 
-export async function updateUserRole({role,userId}:updateUserRoleProps) {
+export async function updateUserRole({ role, userId }: updateUserRoleProps) {
   try {
-    const {data} = await api.put<User>("/admin/auth/updateRole", {
+    const { data } = await api.put<User>('/admin/auth/updateRole', {
       role,
-      userId
+      userId,
     })
     return data
   } catch (error) {
     console.error(error)
-    throw new Error("Error on update user role")
+    throw new Error('Error on update user role')
   }
 }

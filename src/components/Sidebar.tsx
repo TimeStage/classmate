@@ -25,13 +25,12 @@ export function Sidebar() {
 
   const buttonClassName =
     'flex gap-2 items-center text-gray-100 font-bold text-xl cursor-pointer hover:opacity-70 transition-all'
-console.log(pathname === '/');
 
   return (
     <>
       <button
         className={`fixed left-5 top-5 z-20 text-white md:hidden ${
-          pathname === '/' && 'hidden' 
+          pathname === '/' && 'hidden'
         }`}
         onClick={() => setIsOpen((state) => !state)}
       >

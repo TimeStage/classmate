@@ -220,14 +220,12 @@ export function ImportExcel() {
           disabled={loader !== 0}
           className="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
           onChange={(event) => {
-            
             if (event.target.files && event.target.files.length > 0) {
-              console.log(event.target.files[0].type);
               if (
                 ![
                   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                   '',
-                  'application/vnd.openxmlformats-officedocument.spreadsheetml.template'
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
                 ].includes(event.target.files[0].type)
               ) {
                 toast.error('Arquivo selecionado tem o formato errado!')

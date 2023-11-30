@@ -27,5 +27,5 @@ export const importExcelRequestSchema = z.object({
 
 export const updateRoleSchema = z.object({
   userId: z.string(),
-  role: z.enum(["ADMIN", "TEATCHER", "STUDENT"])
+  role: z.enum(['ADMIN', 'TEATCHER', 'STUDENT']),
 })

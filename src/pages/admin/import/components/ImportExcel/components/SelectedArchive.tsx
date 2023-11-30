@@ -4,7 +4,7 @@ interface SelectedArchiveProps {
 export function SelectedArchive({ file }: SelectedArchiveProps) {
   if (file) {
     return (
-      <p className="text-amber-500 font-bold text-xs absolute bottom-10">
+      <p className="absolute bottom-10 text-xs font-bold text-amber-500">
         <span className="font-normal"> Arquivo selecionado: </span> {file?.name}
       </p>
     )

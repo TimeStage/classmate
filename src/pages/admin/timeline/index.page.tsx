@@ -5,12 +5,9 @@ import { getServerSession } from 'next-auth'
 export default function TimelinePage() {
   return (
     <main className="flex max-w-[100vw] flex-col gap-10 overflow-hidden py-10">
-
-<div>
-  <h1>Cursos</h1>
-</div>
-
-
+      <div>
+        <h1>Cursos</h1>
+      </div>
     </main>
   )
 }

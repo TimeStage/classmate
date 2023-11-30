@@ -62,8 +62,8 @@ export async function upsertData(courses: Course[]) {
             currentClassHour < 12
               ? 'MORNING'
               : currentClassHour < 18
-              ? 'AFTERNOON'
-              : 'NOCTURNAL'
+                ? 'AFTERNOON'
+                : 'NOCTURNAL'
 
           await prisma.class.upsert({
             create: {

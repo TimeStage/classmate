@@ -14,29 +14,30 @@ interface UsersPageProps {
   user: User
 }
 
-export default function UsersPage({ user, users: serverUsers }: UsersPageProps) {
-
+export default function UsersPage({
+  user,
+  users: serverUsers,
+}: UsersPageProps) {
   const [users, setUsers] = useState<User[]>(serverUsers ?? [])
 
-  async function updateUser(userId: string, role: Role, index:number) {
+  async function updateUser(userId: string, role: Role, index: number) {
     try {
       const user = await updateUserRole({
-        userId,role
+        userId,
+        role,
       })
 
-      setUsers(state=> {
+      setUsers((state) => {
         const tempState = [...state]
 
         tempState[index].role = user.role
         return tempState
       })
 
-      toast.success("Cargo alterado com sucesso")
-      
-      
+      toast.success('Cargo alterado com sucesso')
     } catch (error) {
       console.error(error)
-      toast.error("ocorreu um erro a alterar o cargo do usuário!")
+      toast.error('ocorreu um erro a alterar o cargo do usuário!')
     }
   }
 
@@ -54,19 +55,23 @@ export default function UsersPage({ user, users: serverUsers }: UsersPageProps) 
             >
               <h1 className="text-2xl font-bold">{user.name}</h1>
               <p className="text-xl">{user.role}</p>
-              <div className='flex justify-center items-center gap-1'>
-              <Button onClick={()=> {
-                updateUser(user.id, Role['ADMIN'], i)
-              }} className='w-fit bg-green-500'>
-                <ArrowCircleUp size={24} className='text-gray-100' />
-              </Button>
-              <Button
-              onClick={()=> {
-                updateUser(user.id, Role['STUDENT'], i)
-              }}
-              className='w-fit bg-red-500'>
-                <ArrowCircleDown size={24} className='text-gray-100' />
-              </Button>
+              <div className="flex items-center justify-center gap-1">
+                <Button
+                  onClick={() => {
+                    updateUser(user.id, Role.ADMIN, i)
+                  }}
+                  className="w-fit bg-green-500"
+                >
+                  <ArrowCircleUp size={24} className="text-gray-100" />
+                </Button>
+                <Button
+                  onClick={() => {
+                    updateUser(user.id, Role.STUDENT, i)
+                  }}
+                  className="w-fit bg-red-500"
+                >
+                  <ArrowCircleDown size={24} className="text-gray-100" />
+                </Button>
               </div>
             </div>
           ))}
