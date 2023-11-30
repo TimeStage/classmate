@@ -25,8 +25,11 @@ export function buildNextAuthOptions(
         return { ...token }
       },
 
-      async signIn({ account }) {
-        if (account?.provider === 'google') {
+      async signIn({ account, user }) {
+        if (
+          account?.provider === 'google' &&
+          user.email?.endsWith('sed.sc.gov.br')
+        ) {
           return true
         }
         return '/'

@@ -45,7 +45,7 @@ export default function AdminPage({ classes }: AdminPageProps) {
           <FastAccessCard href="/admin/users">
             <ClipboardText size={32} /> Gerenciar administradores
           </FastAccessCard>
-          <FastAccessCard href="/admin/timeline">
+          <FastAccessCard className="cursor-not-allowed opacity-70" href="/">
             <PencilSimpleLine size={32} /> Criar/Editar cronôgrama
           </FastAccessCard>
         </div>
