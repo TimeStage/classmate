@@ -10,7 +10,7 @@ export default async function GetAll(
   res: NextApiResponse,
 ) {
   try {
-    if (req.method !== 'GET') {
+    if (req.method !== 'OPTIONS' && req.method !== 'GET') {
       return res.status(405)
     }
 

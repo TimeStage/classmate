@@ -8,7 +8,7 @@ export default async function GetByCourse(
   res: NextApiResponse,
 ) {
   try {
-    if (req.method !== 'GET') {
+    if (req.method !== 'GET' && req.method !== 'OPTIONS') {
       return res.status(405).end()
     }
 

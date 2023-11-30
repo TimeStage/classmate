@@ -9,7 +9,7 @@ export default async function GetAll(
   res: NextApiResponse,
 ) {
   try {
-    if (req.method !== 'POST') {
+    if (req.method !== 'OPTIONS' && req.method !== 'POST') {
       return res.status(405)
     }
 

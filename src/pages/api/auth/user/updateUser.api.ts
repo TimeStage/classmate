@@ -9,7 +9,7 @@ export default async function Handler(
   res: NextApiResponse,
 ) {
   try {
-    if (req.method !== 'PATCH') {
+    if (req.method !== 'OPTIONS' && req.method !== 'PATCH') {
       return res.status(405).end()
     }
 
