@@ -6,6 +6,7 @@ import { TeamsSection } from './components/TeamsSection'
 import { GetServerSideProps } from 'next'
 import { getServerSession } from 'next-auth'
 import { buildNextAuthOptions } from '../api/auth/[...nextauth].api'
+import { Spinner } from '@/components/Spinner'
 
 export default function Team() {
   const [teamSearch, setTeamSearch] = useState('')
@@ -20,7 +21,13 @@ export default function Team() {
   }
 
   if (!teams) {
-    return <p>Erro ao buscar turmas!</p>
+    return (
+      <div
+        className={`flex h-full w-full flex-col items-center justify-start gap-6 md:m-auto md:max-w-lg `}
+      >
+        <Spinner />
+      </div>
+    )
   }
 
   return (
