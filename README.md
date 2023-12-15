@@ -1,38 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Classmate
 
-## Getting Started
+## Breve introdução
 
-First, run the development server:
+O projeto ClassMate surge para resolver um problema crítico que acontece em
+nossa escola, onde a atualização dos horários e cronogramas de aulas
+frequentemente deixa a desejar. Os gestores responsáveis pelas mudanças nos
+horários muitas vezes enviam planilhas em um grupo de líderes esperando que as
+mudanças sejam espalhadas para os alunos. As reclamações dos alunos sobre a
+falta de antecedência na divulgação dos horários são grandes, essa falha na
+comunicação pode resultar em uma situação prejudicial ao aluno. O ClassMate foi
+desenvolvido para resolver esse problema, através dele pretendemos oferecer uma
+solução eficiente e de fácil acesso para todos. O aplicativo vai permitir que o gestor
+importe planilhas com antecedência no App tornando a visualização do cronograma
+semanal de aula de todas as turmas mais acessível e eficiente.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## **Stacks utilizadas:** 
+- 🚀 Desenvolvido com [NextJs](https://nextjs.org/)
+- ✅ Validação com [ZOD](https://zod.dev/)
+- 🎨 Estilização com [TailwindCSS](https://tailwindcss.com/) Componentes com [Radix-UI](https://www.radix-ui.com/docs/primitives/overview/introduction)
+- 📝 Validação de Formulário com [React-Hook-Form](https://react-hook-form.com/)
+- ℹ️ Icones com [Phosphor-React](https://phosphoricons.com/)
+- 📨 Comunicação com Server Side utilizando [Axios](https://axios-http.com/ptbr/docs/intro)
+- 🎲 Padronização de código com [Eslint](https://eslint.org/)
+- 🗜️ Importação de dados com [ExcelJs](https://www.npmjs.com/package/exceljs)
+- E muitas outras
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Links
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+[Link do documento do projeto em pdf](https://github.com/TimeStage/classmate/files/13690465/PI-Projeto_Integrador-2023_Dcto_Modelo.pdf)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+[Link do deploy](https://classmate-five.vercel.app/home) 
+> Atenção: `Somente usuários com uma conta google SED conseguem acessar`.
 
-## Learn More
+## Licença
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[MIT](https://choosealicense.com/licenses/mit/)
