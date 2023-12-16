@@ -31,6 +31,8 @@ semanal de aula de todas as turmas mais acessível e eficiente.
 
 [Link do documento do projeto em pdf](https://github.com/TimeStage/classmate/files/13690465/PI-Projeto_Integrador-2023_Dcto_Modelo.pdf)
 
+[Link da apresentação `Live`](https://www.youtube.com/live/JxiV6uKfHu4?si=0c_KxHG1_JNhpIj6&t=957)
+
 [Link do deploy](https://classmate-five.vercel.app/home) 
 > Atenção: `Somente usuários com uma conta google SED conseguem acessar`.
 
